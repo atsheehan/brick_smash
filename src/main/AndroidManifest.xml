@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.bazbatlabs.smashballs">
+  <application android:icon="@drawable/android:star_big_on" android:label="Smashballs" android:debuggable="true">
+    <activity android:name=".SmashballsActivity"
+              android:label="Smashballs"
+              android:configChanges="keyboard|keyboardHidden|orientation"
+              android:screenOrientation="landscape">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="ouya.intent.category.GAME" />
+      </intent-filter>
+    </activity>
+  </application>
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="16"/>
+</manifest>
