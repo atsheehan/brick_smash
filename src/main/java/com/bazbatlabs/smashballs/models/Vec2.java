@@ -2,6 +2,8 @@ package com.bazbatlabs.smashballs.models;
 
 public final class Vec2 {
 
+    public static final Vec2 ZERO = new Vec2(0.0f, 0.0f);
+
     public final float x;
     public final float y;
 
