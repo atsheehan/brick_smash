@@ -5,7 +5,7 @@ public final class World {
     private final Paddle paddle;
 
     public World() {
-        this.paddle = new Paddle(0f, 100f, 30f);
+        this.paddle = new Paddle(100f, 500f, 30f);
     }
 
     public void update() {
