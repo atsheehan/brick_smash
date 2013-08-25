@@ -28,7 +28,7 @@ public final class InitController implements Controller {
 
     @Override
     public Controller update() {
-        return this;
+        return new WorldController();
     }
 
     @Override
