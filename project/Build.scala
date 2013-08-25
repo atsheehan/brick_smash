@@ -11,7 +11,7 @@ object ProjectSettings {
 object General {
   val settings = Defaults.defaultSettings ++ Seq (
     name := ProjectSettings.name,
-    version := ProjectSettings.version
+    version := ProjectSettings.version,
     versionCode := 0,
     platformName in Android := "android-16",
     libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test",
