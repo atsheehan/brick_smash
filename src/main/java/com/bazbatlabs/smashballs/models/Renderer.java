@@ -101,6 +101,10 @@ public final class Renderer {
         gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
     }
 
+    public void drawRect(Rect bounds, Color color) {
+        drawRect(bounds.origin, bounds.size, color);
+    }
+
     public void drawRect(Vec2 origin, Vec2 size, Color color) {
         addVertex(origin.x, origin.y, color);
         addVertex(origin.x + size.x, origin.y, color);
