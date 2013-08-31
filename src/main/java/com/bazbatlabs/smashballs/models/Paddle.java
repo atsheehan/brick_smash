@@ -8,8 +8,7 @@ public final class Paddle {
     private static final float HEIGHT = 10.0f;
     private static final float MAX_SPEED = 5.0f;
 
-    private final float leftWall;
-    private final float rightWall;
+    private final Rect bounds;
 
     private final Vec2 size;
 
@@ -19,18 +18,18 @@ public final class Paddle {
     private boolean acceleratingLeft;
     private boolean acceleratingRight;
 
-
-    public Paddle(float leftWall, float rightWall, float startY) {
+    public Paddle(Rect bounds, float startY) {
 
         this.acceleratingLeft = false;
         this.acceleratingRight = false;
 
-        this.leftWall = leftWall;
-        this.rightWall = rightWall;
+        this.bounds = bounds;
 
         this.size = new Vec2(WIDTH, HEIGHT);
 
-        float startX = leftWall + (rightWall - leftWall - this.size.x) / 2f;
+        float startX =
+            bounds.left() + (bounds.right() - bounds.left() - this.size.x) / 2f;
+
         this.pos = new Vec2(startX, startY);
 
         this.vel = Vec2.ZERO;
@@ -54,14 +53,14 @@ public final class Paddle {
 
         pos = pos.add(vel);
 
-        if (pos.x + size.x > rightWall) {
+        if (pos.x + size.x > bounds.right()) {
             vel = Vec2.ZERO;
-            pos = new Vec2(rightWall - size.x, pos.y);
+            pos = new Vec2(bounds.right() - size.x, pos.y);
         }
 
-        if (pos.x < leftWall) {
+        if (pos.x < bounds.left()) {
             vel = Vec2.ZERO;
-            pos = new Vec2(leftWall, pos.y);
+            pos = new Vec2(bounds.left(), pos.y);
         }
     }
 
