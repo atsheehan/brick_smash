@@ -40,6 +40,8 @@ public final class Ball {
         boolean flipX = false;
         float minDistance = Float.MAX_VALUE;
 
+        // Check for collision with walls
+
         if (effectiveVel.x > 0.0f) {
             if (newCenter.x > bounds.right()) {
                 float distanceToCollision =
@@ -84,6 +86,24 @@ public final class Ball {
                 if (distanceToCollision < minDistance) {
                     minDistance = distanceToCollision;
                     flipX = false;
+                }
+            }
+        }
+
+        // Check for collision with paddle
+        Rect paddle = world.paddle().bounds();
+
+        if (effectiveVel.y < 0.0f) {
+            if (center.y > paddle.top() && newCenter.y < paddle.top()) {
+                float distance = (paddle.top() - center.y) / (newCenter.y - center.y);
+
+                if (distance < minDistance) {
+                    float xIntercept = center.x + (effectiveVel.x * distance);
+
+                    if (xIntercept > paddle.left() && xIntercept < paddle.right()) {
+                        flipX = false;
+                        minDistance = distance;
+                    }
                 }
             }
         }

@@ -16,6 +16,7 @@ public final class World {
     }
 
     public Rect bounds() { return bounds; }
+    public Paddle paddle() { return paddle; }
 
     public void update() {
         paddle.update();

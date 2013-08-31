@@ -37,6 +37,7 @@ public final class Paddle {
 
     public Vec2 pos() { return pos; }
     public Vec2 size() { return size; }
+    public Rect bounds() { return new Rect(pos, size); }
 
     public void update() {
 
