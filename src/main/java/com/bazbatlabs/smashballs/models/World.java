@@ -38,6 +38,21 @@ public final class World {
     public void update() {
         paddle.update();
         ball.update();
+
+        for (Brick brick : bricks) {
+            brick.update();
+        }
+
+        clearDestroyedBricks();
+    }
+
+    private void clearDestroyedBricks() {
+        ListIterator<Brick> iter = bricks.listIterator();
+        while (iter.hasNext()) {
+            if (iter.next().isDestroyed()) {
+                iter.remove();
+            }
+        }
     }
 
     public List<Collidable> collidables() {
