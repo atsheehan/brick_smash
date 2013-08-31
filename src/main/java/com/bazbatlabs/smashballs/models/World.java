@@ -1,5 +1,7 @@
 package com.bazbatlabs.smashballs.models;
 
+import java.util.*;
+
 public final class World {
 
     private static final float WIDTH = 400.0f;
@@ -7,20 +9,39 @@ public final class World {
 
     private final Paddle paddle;
     private final Ball ball;
-    private final Rect bounds;
+    private final List<Wall> walls;
 
     public World() {
-        this.bounds = new Rect(new Vec2(100.0f, 20.0f), new Vec2(WIDTH, HEIGHT));
-        this.paddle = new Paddle(this.bounds, 50f);
+        Vec2 origin = new Vec2(100.0f, 20.0f);
+        Vec2 size = new Vec2(WIDTH, HEIGHT);
+
+        this.walls = new ArrayList<Wall>();
+
+        walls.add(new Wall(new Rect(origin, new Vec2(size.x, 0.0f))));
+        walls.add(new Wall(new Rect(origin, new Vec2(0.0f, size.y))));
+        walls.add(new Wall(new Rect(new Vec2(origin.x, origin.y + size.y),
+                                    new Vec2(size.x, 0.0f))));
+        walls.add(new Wall(new Rect(new Vec2(origin.x + size.x, origin.y),
+                                    new Vec2(0.0f, size.y))));
+
+        this.paddle = new Paddle(new Rect(origin, size), 50f);
         this.ball = new Ball(new Vec2(200f, 200f), this);
     }
 
-    public Rect bounds() { return bounds; }
     public Paddle paddle() { return paddle; }
 
     public void update() {
         paddle.update();
         ball.update();
+    }
+
+    public List<Collidable> collidables() {
+        List<Collidable> collidables =  new ArrayList<Collidable>();
+        collidables.addAll(walls);
+        collidables.add(paddle);
+
+        return collidables;
+
     }
 
     public void draw(Renderer renderer) {

@@ -28,6 +28,10 @@ public final class Ball {
     public Vec2 pos() { return center.subtract(halfSize); }
     public Vec2 size() { return size; }
 
+    public void kickstart(float angleInRadians) {
+        vel = Vec2.fromAngle(angleInRadians).scale(SPEED);
+    }
+
     public void update() {
         move(vel);
     }
@@ -35,100 +39,117 @@ public final class Ball {
     private void move(Vec2 effectiveVel) {
         Vec2 newCenter = center.add(effectiveVel);
 
-        Rect bounds = world.bounds();
+        // Find the closest collision amongst all of the collidable objects
+        Collision collision = Collision.NONE;
 
-        boolean flipX = false;
-        float minDistance = Float.MAX_VALUE;
-
-        // Check for collision with walls
-
-        if (effectiveVel.x > 0.0f) {
-            if (newCenter.x > bounds.right()) {
-                float distanceToCollision =
-                    (bounds.right() - center.x) / (newCenter.x - center.x);
-
-                if (distanceToCollision < minDistance) {
-                    minDistance = distanceToCollision;
-                    flipX = true;
-                }
-            }
+        for (Collidable collidable : world.collidables()) {
+            collision = nearestCollision(collidable, effectiveVel, newCenter, collision);
         }
 
-        if (effectiveVel.x < 0.0f) {
-            if (newCenter.x < bounds.left()) {
-                float distanceToCollision =
-                    (bounds.left() - center.x) / (newCenter.x - center.x);
-
-                if (distanceToCollision < minDistance) {
-                    minDistance = distanceToCollision;
-                    flipX = true;
-                }
-            }
-        }
-
-        if (effectiveVel.y > 0.0f) {
-            if (newCenter.y > bounds.top()) {
-                float distanceToCollision =
-                    (bounds.top() - center.y) / (newCenter.y - center.y);
-
-                if (distanceToCollision < minDistance) {
-                    minDistance = distanceToCollision;
-                    flipX = false;
-                }
-            }
-        }
-
-        if (effectiveVel.y < 0.0f) {
-            if (newCenter.y < bounds.bottom()) {
-                float distanceToCollision =
-                    (bounds.bottom() - center.y) / (newCenter.y - center.y);
-
-                if (distanceToCollision < minDistance) {
-                    minDistance = distanceToCollision;
-                    flipX = false;
-                }
-            }
-        }
-
-        // Check for collision with paddle
-        Rect paddle = world.paddle().bounds();
-
-        if (effectiveVel.y < 0.0f) {
-            if (center.y > paddle.top() && newCenter.y < paddle.top()) {
-                float distance = (paddle.top() - center.y) / (newCenter.y - center.y);
-
-                if (distance < minDistance) {
-                    float xIntercept = center.x + (effectiveVel.x * distance);
-
-                    if (xIntercept > paddle.left() && xIntercept < paddle.right()) {
-                        flipX = false;
-                        minDistance = distance;
-                    }
-                }
-            }
-        }
-
-        if (minDistance < 1.0f) {
-            Vec2 actualVel = effectiveVel.scale(minDistance);
+        if (collision.distance < 1.0f) {
+            Vec2 actualVel = effectiveVel.scale(collision.distance);
             Vec2 remainingVel = effectiveVel.subtract(actualVel);
-
-            if (flipX) {
-                vel = new Vec2(-vel.x, vel.y);
-                remainingVel = new Vec2(-remainingVel.x, remainingVel.y);
-            } else {
-                vel = new Vec2(vel.x, -vel.y);
-                remainingVel = new Vec2(remainingVel.x, -remainingVel.y);
-            }
 
             center = center.add(actualVel);
 
+            // Reverse direction after a collision
+            switch (collision.axis) {
+            case X:
+                vel = new Vec2(-vel.x, vel.y);
+                remainingVel = new Vec2(-remainingVel.x, remainingVel.y);
+                break;
+
+            case Y:
+                vel = new Vec2(vel.x, -vel.y);
+                remainingVel = new Vec2(remainingVel.x, -remainingVel.y);
+                break;
+            }
+
+            collision.object.hit();
             move(remainingVel);
+
         } else {
             center = newCenter;
         }
     }
 
-    public void kickstart(float angleInRadians) {
-        vel = Vec2.fromAngle(angleInRadians).scale(SPEED);
+    private Collision nearestCollision(Collidable collidable, Vec2 effectiveVel,
+                                       Vec2 newCenter, Collision bestCollision) {
+
+        Rect bounds = collidable.bounds();
+
+        if (effectiveVel.y < 0.0f) {
+            if (center.y > bounds.top() && newCenter.y < bounds.top()) {
+                float distance = (bounds.top() - center.y) / (newCenter.y - center.y);
+
+                if (distance < bestCollision.distance) {
+                    float xIntercept = center.x + (effectiveVel.x * distance);
+
+                    if (xIntercept > bounds.left() && xIntercept < bounds.right()) {
+                        bestCollision = new Collision(collidable, distance, Axis.Y);
+                    }
+                }
+            }
+        }
+
+        if (effectiveVel.y > 0.0f) {
+            if (center.y < bounds.bottom() && newCenter.y > bounds.bottom()) {
+                float distance = (bounds.bottom() - center.y) / (newCenter.y - center.y);
+
+                if (distance < bestCollision.distance) {
+                    float xIntercept = center.x + (effectiveVel.x * distance);
+
+                    if (xIntercept > bounds.left() && xIntercept < bounds.right()) {
+                        bestCollision = new Collision(collidable, distance, Axis.Y);
+                    }
+                }
+            }
+        }
+
+        if (effectiveVel.x < 0.0f) {
+            if (center.x > bounds.right() && newCenter.x < bounds.right()) {
+                float distance = (bounds.right() - center.x) / (newCenter.x - center.x);
+
+                if (distance < bestCollision.distance) {
+                    float yIntercept = center.y + (effectiveVel.y * distance);
+
+                    if (yIntercept > bounds.bottom() && yIntercept < bounds.top()) {
+                        bestCollision = new Collision(collidable, distance, Axis.X);
+                    }
+                }
+            }
+        }
+
+        if (effectiveVel.x > 0.0f) {
+            if (center.x < bounds.left() && newCenter.x > bounds.left()) {
+                float distance = (bounds.left() - center.x) / (newCenter.x - center.x);
+
+                if (distance < bestCollision.distance) {
+                    float yIntercept = center.y + (effectiveVel.y * distance);
+
+                    if (yIntercept > bounds.bottom() && yIntercept < bounds.top()) {
+                        bestCollision = new Collision(collidable, distance, Axis.X);
+                    }
+                }
+            }
+        }
+
+        return bestCollision;
     }
+
+    private static class Collision {
+        public static final Collision NONE = new Collision(null, Float.MAX_VALUE, Axis.X);
+
+        public final Collidable object;
+        public final float distance;
+        public final Axis axis;
+
+        public Collision(Collidable object, float distance, Axis axis) {
+            this.object = object;
+            this.distance = distance;
+            this.axis = axis;
+        }
+    }
+
+    private enum Axis { X, Y }
 }

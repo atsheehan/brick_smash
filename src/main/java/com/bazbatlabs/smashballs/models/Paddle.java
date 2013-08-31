@@ -1,6 +1,6 @@
 package com.bazbatlabs.smashballs.models;
 
-public final class Paddle {
+public final class Paddle implements Collidable {
 
     private static final float FRICTION = 0.1f;
     private static final float ACCELERATION = 0.5f;
@@ -80,4 +80,6 @@ public final class Paddle {
         default: break;
         }
     }
+
+    public void hit() {}
 }
