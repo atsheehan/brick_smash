@@ -39,12 +39,15 @@ public final class Ball {
     }
 
     public void update() {
-        if (state == State.STUCK) {
+        switch (state) {
+        case STUCK:
             Vec2 paddleCenter = world.paddle().center();
             center = new Vec2(paddleCenter.x, paddleCenter.y + RADIUS);
+            break;
 
-        } else {
+        case MOVING:
             move(vel);
+            break;
         }
     }
 
