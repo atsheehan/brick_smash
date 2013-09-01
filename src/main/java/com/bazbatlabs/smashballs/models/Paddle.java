@@ -3,7 +3,7 @@ package com.bazbatlabs.smashballs.models;
 public final class Paddle implements Collidable {
 
     private static final float FRICTION = 0.1f;
-    private static final float ACCELERATION = 0.5f;
+    private static final float ACCELERATION = 0.75f;
     private static final float WIDTH = 50.0f;
     private static final float HEIGHT = 10.0f;
     private static final float MAX_SPEED = 5.0f;
@@ -35,6 +35,7 @@ public final class Paddle implements Collidable {
         this.vel = Vec2.ZERO;
     }
 
+    public Vec2 vel() { return vel; }
     public Vec2 pos() { return pos; }
     public Vec2 size() { return size; }
     public Rect bounds() { return new Rect(pos, size); }
@@ -71,6 +72,10 @@ public final class Paddle implements Collidable {
 
     public void stopAccelerating(Direction direction) {
         toggleAcceleration(direction, false);
+    }
+
+    public Vec2 center() {
+        return new Vec2(pos.x + (size.x / 2.0f), pos.y + size.y);
     }
 
     public void hit() {}

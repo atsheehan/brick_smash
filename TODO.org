@@ -1,10 +1,11 @@
-* deflect different angles off paddle
-* ball starts on paddle initially
-* ball disappears off bottom of screen and lose life
-* limited number of lives available
-* game over if number of lives drops to zero
-* load levels from file
-* multiple brick types
-* add textures
-* transition to OpenGL ES 2.0
-* add sounds
+* DONE deflect different angles off paddle
+* TODO ball starts on paddle initially
+* TODO ball disappears off bottom of screen and lose life
+* TODO limited number of lives available
+* TODO game over if number of lives drops to zero
+* TODO load levels from file
+* TODO multiple brick types
+* TODO add textures
+* TODO transition to OpenGL ES 2.0
+* TODO add sounds
+* TODO center world on screen

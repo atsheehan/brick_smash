@@ -14,26 +14,38 @@ public final class Ball {
     private World world;
     private Vec2 center;
     private Vec2 vel;
+    private State state;
 
     public Ball(Vec2 initialCenter, World world) {
         this.world = world;
 
-        this.center = initialCenter;
-        this.vel = Vec2.fromAngle((float)Math.PI / 4f).scale(SPEED);
+        this.center = new Vec2(initialCenter.x, initialCenter.y + RADIUS);
+        this.vel = Vec2.ZERO;
 
         this.size = new Vec2(DIAMETER, DIAMETER);
         this.halfSize = new Vec2(RADIUS, RADIUS);
+
+        this.state = State.STUCK;
     }
 
     public Vec2 pos() { return center.subtract(halfSize); }
     public Vec2 size() { return size; }
 
     public void kickstart(float angleInRadians) {
-        vel = Vec2.fromAngle(angleInRadians).scale(SPEED);
+        if (state == State.STUCK){
+            vel = Vec2.fromAngle(angleInRadians).scale(SPEED);
+            state = State.MOVING;
+        }
     }
 
     public void update() {
-        move(vel);
+        if (state == State.STUCK) {
+            Vec2 paddleCenter = world.paddle().center();
+            center = new Vec2(paddleCenter.x, paddleCenter.y + RADIUS);
+
+        } else {
+            move(vel);
+        }
     }
 
     private void move(Vec2 effectiveVel) {
@@ -145,5 +157,9 @@ public final class Ball {
             this.distance = distance;
             this.axis = axis;
         }
+    }
+
+    private enum State {
+        STUCK, MOVING
     }
 }

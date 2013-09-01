@@ -18,7 +18,7 @@ public final class World {
     private State state;
 
     public World() {
-        Vec2 origin = new Vec2(100.0f, 20.0f);
+        Vec2 origin = Vec2.ZERO;
         Vec2 size = new Vec2(WIDTH, HEIGHT);
 
         this.walls = new ArrayList<Wall>();
@@ -39,7 +39,7 @@ public final class World {
         }
 
         this.paddle = new Paddle(new Rect(origin, size), 50f);
-        this.ball = new Ball(new Vec2(200f, 200f), this);
+        this.ball = new Ball(paddle.center(), this);
         this.state = State.NORMAL;
     }
 
@@ -96,6 +96,21 @@ public final class World {
 
     public void stopAcceleratingPaddle(Direction direction) {
         paddle.stopAccelerating(direction);
+    }
+
+    public void kickstartBall() {
+        Vec2 vel = paddle.vel();
+        float angle = 0.0f;
+
+        if (vel.x > 0.0f) {
+            angle = (float)Math.PI / 4f;
+        } else if (vel.x < 0.0f) {
+            angle = 3f * (float)Math.PI / 4f;
+        } else {
+            angle = (float)Math.PI / 2f;
+        }
+
+        ball.kickstart(angle);
     }
 
     private enum State {

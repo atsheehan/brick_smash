@@ -65,6 +65,10 @@ public final class WorldController implements Controller {
             world.stopAcceleratingPaddle(Direction.RIGHT);
             break;
 
+        case OuyaController.BUTTON_O:
+            world.kickstartBall();
+            break;
+
         default:
             handled = false;
             break;
