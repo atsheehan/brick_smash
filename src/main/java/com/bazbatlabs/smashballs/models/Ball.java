@@ -78,14 +78,19 @@ public final class Ball {
 
         Rect bounds = collidable.bounds();
 
+        float top = bounds.top() + RADIUS;
+        float bottom = bounds.bottom() - RADIUS;
+        float left = bounds.left() - RADIUS;
+        float right = bounds.right() + RADIUS;
+
         if (effectiveVel.y < 0.0f) {
-            if (center.y > bounds.top() && newCenter.y < bounds.top()) {
-                float distance = (bounds.top() - center.y) / (newCenter.y - center.y);
+            if (center.y > top && newCenter.y < top) {
+                float distance = (top - center.y) / (newCenter.y - center.y);
 
                 if (distance < bestCollision.distance) {
                     float xIntercept = center.x + (effectiveVel.x * distance);
 
-                    if (xIntercept > bounds.left() && xIntercept < bounds.right()) {
+                    if (xIntercept > left && xIntercept < right) {
                         bestCollision = new Collision(collidable, distance, Axis.Y);
                     }
                 }
@@ -93,13 +98,13 @@ public final class Ball {
         }
 
         if (effectiveVel.y > 0.0f) {
-            if (center.y < bounds.bottom() && newCenter.y > bounds.bottom()) {
-                float distance = (bounds.bottom() - center.y) / (newCenter.y - center.y);
+            if (center.y < bottom && newCenter.y > bottom) {
+                float distance = (bottom - center.y) / (newCenter.y - center.y);
 
                 if (distance < bestCollision.distance) {
                     float xIntercept = center.x + (effectiveVel.x * distance);
 
-                    if (xIntercept > bounds.left() && xIntercept < bounds.right()) {
+                    if (xIntercept > left && xIntercept < right) {
                         bestCollision = new Collision(collidable, distance, Axis.Y);
                     }
                 }
@@ -107,13 +112,13 @@ public final class Ball {
         }
 
         if (effectiveVel.x < 0.0f) {
-            if (center.x > bounds.right() && newCenter.x < bounds.right()) {
-                float distance = (bounds.right() - center.x) / (newCenter.x - center.x);
+            if (center.x > right && newCenter.x < right) {
+                float distance = (right - center.x) / (newCenter.x - center.x);
 
                 if (distance < bestCollision.distance) {
                     float yIntercept = center.y + (effectiveVel.y * distance);
 
-                    if (yIntercept > bounds.bottom() && yIntercept < bounds.top()) {
+                    if (yIntercept > bottom && yIntercept < top) {
                         bestCollision = new Collision(collidable, distance, Axis.X);
                     }
                 }
@@ -121,13 +126,13 @@ public final class Ball {
         }
 
         if (effectiveVel.x > 0.0f) {
-            if (center.x < bounds.left() && newCenter.x > bounds.left()) {
-                float distance = (bounds.left() - center.x) / (newCenter.x - center.x);
+            if (center.x < left && newCenter.x > left) {
+                float distance = (left - center.x) / (newCenter.x - center.x);
 
                 if (distance < bestCollision.distance) {
                     float yIntercept = center.y + (effectiveVel.y * distance);
 
-                    if (yIntercept > bounds.bottom() && yIntercept < bounds.top()) {
+                    if (yIntercept > bottom && yIntercept < top) {
                         bestCollision = new Collision(collidable, distance, Axis.X);
                     }
                 }

@@ -7,6 +7,10 @@ public final class World {
     private static final float WIDTH = 400.0f;
     private static final float HEIGHT = 300.0f;
 
+    private static final int BRICKS_PER_ROW = 16;
+    private static final float BRICK_WIDTH = WIDTH / BRICKS_PER_ROW;
+    private static final float BRICK_HEIGHT = BRICK_WIDTH / 3.0f;
+
     private final Paddle paddle;
     private final Ball ball;
     private final List<Wall> walls;
@@ -25,9 +29,13 @@ public final class World {
         this.walls.add(new Wall(new Rect(new Vec2(origin.x + size.x, origin.y),
                                          new Vec2(0.0f, size.y))));
 
+        Vec2 brickSize = new Vec2(BRICK_WIDTH, BRICK_HEIGHT);
+
         this.bricks = new ArrayList<Brick>();
-        this.bricks.add(new Brick(new Vec2(100.0f, 100.0f)));
-        this.bricks.add(new Brick(new Vec2(120.0f, 100.0f)));
+        for (int i = 0; i < BRICKS_PER_ROW; i++) {
+            Vec2 pos = new Vec2(origin.x + (i * BRICK_WIDTH), 250.0f);
+            this.bricks.add(new Brick(new Rect(pos, brickSize)));
+        }
 
         this.paddle = new Paddle(new Rect(origin, size), 50f);
         this.ball = new Ball(new Vec2(200f, 200f), this);
