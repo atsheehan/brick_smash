@@ -39,19 +39,25 @@ public final class SmashballsActivity extends Activity implements Renderer  {
 
     private Controller controller;
     private GLSurfaceView view;
+    private boolean rendererSet;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        rendererSet = false;
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
         view = new GLSurfaceView(this);
         view.setRenderer(this);
+        rendererSet = true;
+
         setContentView(view);
+
         controller = new InitController(getAssets());
         OuyaController.init(this);
 
@@ -84,6 +90,24 @@ public final class SmashballsActivity extends Activity implements Renderer  {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {}
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (rendererSet) {
+            view.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (rendererSet) {
+            view.onResume();
+        }
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
