@@ -11,18 +11,18 @@ import com.bazbatlabs.smashballs.models.*;
 public final class WorldController implements Controller {
 
     private final World world;
-    private final Renderer renderer;
+    private final Artist artist;
 
     public WorldController(Resources resources) {
         this.world = new World();
-        this.renderer = new Renderer(resources);
+        this.artist = new Artist(resources);
     }
 
     @Override
     public void draw(int screenWidth, int screenHeight) {
-        renderer.startDrawing();
-        world.draw(renderer);
-        renderer.finishDrawing(screenWidth, screenHeight);
+        artist.startDrawing();
+        world.draw(artist);
+        artist.finishDrawing(screenWidth, screenHeight);
     }
 
     @Override

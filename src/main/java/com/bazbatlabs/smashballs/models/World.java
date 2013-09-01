@@ -81,12 +81,12 @@ public final class World {
         return collidables;
     }
 
-    public void draw(Renderer renderer) {
-        renderer.drawRect(paddle.pos(), paddle.size(), Color.RED);
-        renderer.drawRect(ball.pos(), ball.size(), Color.BLUE);
+    public void draw(Artist artist) {
+        artist.drawRect(paddle.pos(), paddle.size(), Color.RED);
+        artist.drawRect(ball.pos(), ball.size(), Color.BLUE);
 
         for (Brick brick : bricks) {
-            renderer.drawRect(brick.bounds(), Color.GREEN);
+            artist.drawRect(brick.bounds(), Color.GREEN);
         }
     }
 

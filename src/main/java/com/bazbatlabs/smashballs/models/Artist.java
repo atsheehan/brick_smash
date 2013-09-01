@@ -17,7 +17,7 @@ import static android.opengl.GLES20.*;
 
 import com.bazbatlabs.smashballs.R;
 
-public final class Renderer {
+public final class Artist {
 
     private final FloatBuffer vertexBuffer;
     private final ShortBuffer indexBuffer;
@@ -30,7 +30,7 @@ public final class Renderer {
     private int aPositionLoc;
     private int program;
 
-    public Renderer(Resources resources) {
+    public Artist(Resources resources) {
         String vertexSource = readResource(resources, R.raw.vertex_shader);
         String fragmentSource = readResource(resources, R.raw.fragment_shader);
 
@@ -274,5 +274,5 @@ public final class Renderer {
     private static final String A_COLOR = "a_Color";
     private static final String A_POSITION = "a_Position";
 
-    private static final String TAG = "Renderer";
+    private static final String TAG = "Artist";
 }
