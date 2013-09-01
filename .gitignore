@@ -5,3 +5,6 @@ target/
 
 # Emacs/vim autosave files
 *~
+
+# TODO list
+/TODO.org
