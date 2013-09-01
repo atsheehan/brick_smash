@@ -22,7 +22,7 @@ public final class Brick implements Collidable {
         return state == State.DESTROYED;
     }
 
-    public enum State {
+    private enum State {
         NORMAL, DESTROYED
     }
 }

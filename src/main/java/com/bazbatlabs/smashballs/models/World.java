@@ -15,6 +15,7 @@ public final class World {
     private final Ball ball;
     private final List<Wall> walls;
     private final List<Brick> bricks;
+    private State state;
 
     public World() {
         Vec2 origin = new Vec2(100.0f, 20.0f);
@@ -39,19 +40,26 @@ public final class World {
 
         this.paddle = new Paddle(new Rect(origin, size), 50f);
         this.ball = new Ball(new Vec2(200f, 200f), this);
+        this.state = State.NORMAL;
     }
 
     public Paddle paddle() { return paddle; }
 
     public void update() {
-        paddle.update();
-        ball.update();
+        if (state != State.CLEARED) {
+            paddle.update();
+            ball.update();
 
-        for (Brick brick : bricks) {
-            brick.update();
+            for (Brick brick : bricks) {
+                brick.update();
+            }
+
+            clearDestroyedBricks();
+
+            if (bricks.isEmpty()) {
+                state = State.CLEARED;
+            }
         }
-
-        clearDestroyedBricks();
     }
 
     private void clearDestroyedBricks() {
@@ -88,5 +96,9 @@ public final class World {
 
     public void stopAcceleratingPaddle(Direction direction) {
         paddle.stopAccelerating(direction);
+    }
+
+    private enum State {
+        NORMAL, CLEARED
     }
 }
