@@ -8,4 +8,5 @@ public interface Controller {
     public Controller update();
     public boolean onKeyDown(int keyCode, KeyEvent event);
     public boolean onKeyUp(int keyCode, KeyEvent event);
+    public void changeSurface(int width, int height);
 }

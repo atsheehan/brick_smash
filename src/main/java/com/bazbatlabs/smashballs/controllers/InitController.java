@@ -15,10 +15,15 @@ public final class InitController implements Controller {
 
     private final Resources resources;
     private boolean finished;
+    private Artist artist;
 
     public InitController(Resources resources) {
         this.resources = resources;
         this.finished = false;
+
+        // Can't instantiate Artist in here since it needs to happen when there
+        // is an Android context available (in the draw, update, or changeSurface
+        // methods).
     }
 
     @Override
@@ -30,7 +35,12 @@ public final class InitController implements Controller {
 
     @Override
     public Controller update() {
-        return new WorldController(resources, new Artist(resources));
+        return new WorldController(resources, artist());
+    }
+
+    @Override
+    public void changeSurface(int width, int height) {
+        artist().changeSurface(width, height);
     }
 
     @Override
@@ -38,4 +48,13 @@ public final class InitController implements Controller {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) { return false; }
+
+
+    private Artist artist() {
+        if (artist == null) {
+            artist = new Artist(resources);
+        }
+
+        return artist;
+    }
 }

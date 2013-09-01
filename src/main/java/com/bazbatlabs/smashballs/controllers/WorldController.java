@@ -76,4 +76,9 @@ public final class WorldController implements Controller {
 
         return handled;
     }
+
+    @Override
+    public void changeSurface(int width, int height) {
+        artist.changeSurface(width, height);
+    }
 }

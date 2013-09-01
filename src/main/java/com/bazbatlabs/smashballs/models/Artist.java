@@ -89,6 +89,10 @@ public final class Artist {
         glEnableVertexAttribArray(aColorLoc);
     }
 
+    public void changeSurface(int width, int height) {
+        glViewport(0, 0, width, height);
+    }
+
     public void startDrawing() {
         vertexIndex = 0;
         spriteCount = 0;
