@@ -13,9 +13,9 @@ public final class WorldController implements Controller {
     private final World world;
     private final Artist artist;
 
-    public WorldController(Resources resources) {
+    public WorldController(Resources resources, Artist artist) {
         this.world = new World();
-        this.artist = new Artist(resources);
+        this.artist = artist;
     }
 
     @Override

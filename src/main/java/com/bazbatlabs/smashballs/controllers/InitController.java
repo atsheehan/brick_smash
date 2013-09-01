@@ -9,9 +9,11 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
+import com.bazbatlabs.smashballs.models.Artist;
+
 public final class InitController implements Controller {
 
-    private Resources resources;
+    private final Resources resources;
     private boolean finished;
 
     public InitController(Resources resources) {
@@ -28,7 +30,7 @@ public final class InitController implements Controller {
 
     @Override
     public Controller update() {
-        return new WorldController(resources);
+        return new WorldController(resources, new Artist(resources));
     }
 
     @Override
