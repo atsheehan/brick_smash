@@ -12,6 +12,7 @@ import java.nio.FloatBuffer;
 
 import android.util.Log;
 import android.content.res.Resources;
+import android.opengl.Matrix;
 
 import static android.opengl.GLES20.*;
 
@@ -26,11 +27,15 @@ public final class Artist {
     private int vertexIndex;
     private int spriteCount;
 
+    private final float[] projectionMatrix;
+
     private int aColorLoc;
     private int aPositionLoc;
+    private int uMatrixLoc;
+
     private int program;
 
-    public Artist(Resources resources) {
+    public Artist(Resources resources, int screenWidth, int screenHeight) {
         String vertexSource = readResource(resources, R.raw.vertex_shader);
         String fragmentSource = readResource(resources, R.raw.fragment_shader);
 
@@ -49,6 +54,10 @@ public final class Artist {
 
         this.aColorLoc = glGetAttribLocation(this.program, A_COLOR);
         this.aPositionLoc = glGetAttribLocation(this.program, A_POSITION);
+        this.uMatrixLoc = glGetUniformLocation(this.program, U_MATRIX);
+
+        this.projectionMatrix = new float[16];
+        changeSurface(screenWidth, screenHeight);
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(VERTEX_BUFFER_SIZE);
         buffer.order(ByteOrder.nativeOrder());
@@ -90,6 +99,9 @@ public final class Artist {
     }
 
     public void changeSurface(int width, int height) {
+        Vec2 dimensions = gameDimensions(width, height);
+
+        Matrix.orthoM(projectionMatrix, 0, 0f, dimensions.x, 0f, dimensions.y, -1f, 1f);
         glViewport(0, 0, width, height);
     }
 
@@ -106,6 +118,8 @@ public final class Artist {
         glViewport(0, 0, screenWidth, screenHeight);
 
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUniformMatrix4fv(uMatrixLoc, 1, false, projectionMatrix, 0);
 
         glDrawElements(GL_TRIANGLES, INDICES_PER_SPRITE * spriteCount,
                        GL_UNSIGNED_SHORT, indexBuffer);
@@ -277,6 +291,7 @@ public final class Artist {
 
     private static final String A_COLOR = "a_Color";
     private static final String A_POSITION = "a_Position";
+    private static final String U_MATRIX = "u_Matrix";
 
     private static final String TAG = "Artist";
 }

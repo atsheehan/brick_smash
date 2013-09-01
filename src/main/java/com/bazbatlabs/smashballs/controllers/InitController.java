@@ -14,12 +14,10 @@ import com.bazbatlabs.smashballs.models.Artist;
 public final class InitController implements Controller {
 
     private final Resources resources;
-    private boolean finished;
     private Artist artist;
 
     public InitController(Resources resources) {
         this.resources = resources;
-        this.finished = false;
 
         // Can't instantiate Artist in here since it needs to happen when there
         // is an Android context available (in the draw, update, or changeSurface
@@ -28,19 +26,25 @@ public final class InitController implements Controller {
 
     @Override
     public void draw(int screenWidth, int screenHeight) {
-        if (!finished) {
-            finished = true;
+        if (artist == null) {
+            artist = new Artist(resources, screenWidth, screenHeight);
         }
     }
 
     @Override
     public Controller update() {
-        return new WorldController(resources, artist());
+        if (artist == null) {
+            return this;
+        } else {
+            return new WorldController(resources, artist);
+        }
     }
 
     @Override
     public void changeSurface(int width, int height) {
-        artist().changeSurface(width, height);
+        if (artist != null) {
+            artist.changeSurface(width, height);
+        }
     }
 
     @Override
@@ -48,13 +52,4 @@ public final class InitController implements Controller {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) { return false; }
-
-
-    private Artist artist() {
-        if (artist == null) {
-            artist = new Artist(resources);
-        }
-
-        return artist;
-    }
 }
