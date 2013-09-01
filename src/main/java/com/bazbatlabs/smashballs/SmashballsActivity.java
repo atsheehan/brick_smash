@@ -9,8 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.KeyEvent;
 import android.opengl.GLSurfaceView;
-import android.opengl.GLSurfaceView.Renderer;
 import android.media.AudioManager;
+import android.opengl.GLES20;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -19,7 +19,7 @@ import tv.ouya.console.api.OuyaController;
 
 import com.bazbatlabs.smashballs.controllers.*;
 
-public final class SmashballsActivity extends Activity implements Renderer  {
+public final class SmashballsActivity extends Activity implements GLSurfaceView.Renderer  {
 
     private static final String TAG = "SmashballsActivity";
 
@@ -53,12 +53,13 @@ public final class SmashballsActivity extends Activity implements Renderer  {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         view = new GLSurfaceView(this);
+        view.setEGLContextClientVersion(2);
         view.setRenderer(this);
         rendererSet = true;
 
         setContentView(view);
 
-        controller = new InitController(getAssets());
+        controller = new InitController(getResources());
         OuyaController.init(this);
 
         ticksLastFrame = System.nanoTime();
@@ -75,7 +76,7 @@ public final class SmashballsActivity extends Activity implements Renderer  {
         tickCounter += currentTime - ticksLastFrame;
         ticksLastFrame = currentTime;
 
-        controller.draw(gl, view.getWidth(), view.getHeight());
+        controller.draw(view.getWidth(), view.getHeight());
 
         while (tickCounter > UPDATE_DELTA) {
             controller = controller.update();
@@ -86,7 +87,9 @@ public final class SmashballsActivity extends Activity implements Renderer  {
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {}
+    public void onSurfaceChanged(GL10 unused, int width, int height) {
+        GLES20.glViewport(0, 0, width, height);
+    }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {}

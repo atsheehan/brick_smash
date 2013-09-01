@@ -5,22 +5,22 @@ import java.io.*;
 import javax.microedition.khronos.opengles.GL10;
 import android.view.KeyEvent;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
 public final class InitController implements Controller {
 
-    private AssetManager assets;
+    private Resources resources;
     private boolean finished;
 
-
-    public InitController(AssetManager assets) {
-        this.assets = assets;
+    public InitController(Resources resources) {
+        this.resources = resources;
         this.finished = false;
     }
 
     @Override
-    public void draw(GL10 gl, int screenWidth, int screenHeight) {
+    public void draw(int screenWidth, int screenHeight) {
         if (!finished) {
             finished = true;
         }
@@ -28,7 +28,7 @@ public final class InitController implements Controller {
 
     @Override
     public Controller update() {
-        return new WorldController();
+        return new WorldController(resources);
     }
 
     @Override

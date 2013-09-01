@@ -2,6 +2,7 @@ package com.bazbatlabs.smashballs.controllers;
 
 import javax.microedition.khronos.opengles.GL10;
 import android.view.KeyEvent;
+import android.content.res.Resources;
 
 import tv.ouya.console.api.OuyaController;
 
@@ -12,22 +13,21 @@ public final class WorldController implements Controller {
     private final World world;
     private final Renderer renderer;
 
-    public WorldController() {
+    public WorldController(Resources resources) {
         this.world = new World();
-        this.renderer = new Renderer();
+        this.renderer = new Renderer(resources);
     }
 
     @Override
-    public void draw(GL10 gl, int screenWidth, int screenHeight) {
-        renderer.startDrawing(gl, 0);
+    public void draw(int screenWidth, int screenHeight) {
+        renderer.startDrawing();
         world.draw(renderer);
-        renderer.finishDrawing(gl, screenWidth, screenHeight);
+        renderer.finishDrawing(screenWidth, screenHeight);
     }
 
     @Override
     public Controller update() {
         world.update();
-
         return this;
     }
 

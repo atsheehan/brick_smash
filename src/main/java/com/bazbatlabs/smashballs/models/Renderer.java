@@ -1,13 +1,21 @@
 package com.bazbatlabs.smashballs.models;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 import java.nio.FloatBuffer;
 
-import javax.microedition.khronos.opengles.GL10;
+import android.util.Log;
+import android.content.res.Resources;
 
-import android.util.FloatMath;
+import static android.opengl.GLES20.*;
+
+import com.bazbatlabs.smashballs.R;
 
 public final class Renderer {
 
@@ -18,7 +26,30 @@ public final class Renderer {
     private int vertexIndex;
     private int spriteCount;
 
-    public Renderer() {
+    private int aColorLoc;
+    private int aPositionLoc;
+    private int program;
+
+    public Renderer(Resources resources) {
+        String vertexSource = readResource(resources, R.raw.vertex_shader);
+        String fragmentSource = readResource(resources, R.raw.fragment_shader);
+
+        // TODO: check for error return values
+        int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
+        int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
+
+        this.program = linkProgram(vertexShader, fragmentShader);
+
+        validateProgram(this.program);
+
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+
+        glUseProgram(this.program);
+
+        this.aColorLoc = glGetAttribLocation(this.program, A_COLOR);
+        this.aPositionLoc = glGetAttribLocation(this.program, A_POSITION);
+
         ByteBuffer buffer = ByteBuffer.allocateDirect(VERTEX_BUFFER_SIZE);
         buffer.order(ByteOrder.nativeOrder());
         this.vertexBuffer = buffer.asFloatBuffer();
@@ -44,61 +75,36 @@ public final class Renderer {
 
         this.vertexIndex = 0;
         this.spriteCount = 0;
+
+        vertexBuffer.position(0);
+        glVertexAttribPointer(aPositionLoc, FLOATS_PER_POSITION, GL_FLOAT,
+                              false, BYTES_PER_VERTEX, vertexBuffer);
+
+        glEnableVertexAttribArray(aPositionLoc);
+
+        vertexBuffer.position(FLOATS_PER_POSITION);
+        glVertexAttribPointer(aColorLoc, FLOATS_PER_COLOR, GL_FLOAT,
+                              false, BYTES_PER_VERTEX, vertexBuffer);
+
+        glEnableVertexAttribArray(aColorLoc);
     }
 
-    public void startDrawing(GL10 gl, int textureId) {
+    public void startDrawing() {
         vertexIndex = 0;
         spriteCount = 0;
-
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);
     }
 
-    public void finishDrawing(GL10 gl, int screenWidth, int screenHeight) {
-        Vec2 dimensions = gameDimensions(screenWidth, screenHeight);
-
+    public void finishDrawing(int screenWidth, int screenHeight) {
         vertexBuffer.clear();
-        vertexBuffer.put(vertices, 0, vertexIndex);
-        vertexBuffer.flip();
+        vertexBuffer.put(vertices);
 
-        gl.glViewport(0, 0, screenWidth, screenHeight);
-        gl.glMatrixMode(GL10.GL_PROJECTION);
-        gl.glLoadIdentity();
-        gl.glOrthof(0, dimensions.x, 0, dimensions.y, 1, -1);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glViewport(0, 0, screenWidth, screenHeight);
 
-        gl.glClearColor(0, 0, 0, 1);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        if (spriteCount > 0) {
-            gl.glEnable(GL10.GL_TEXTURE_2D);
-            gl.glEnable(GL10.GL_BLEND);
-            gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-            gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-            gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-            gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-
-            vertexBuffer.position(0);
-            gl.glVertexPointer(FLOATS_PER_COORDINATE, GL10.GL_FLOAT,
-                               BYTES_PER_VERTEX, vertexBuffer);
-
-            vertexBuffer.position(FLOATS_PER_COORDINATE);
-            gl.glTexCoordPointer(FLOATS_PER_TEXTURE, GL10.GL_FLOAT,
-                                 BYTES_PER_VERTEX, vertexBuffer);
-
-            vertexBuffer.position(FLOATS_PER_COORDINATE + FLOATS_PER_TEXTURE);
-            gl.glColorPointer(FLOATS_PER_COLOR, GL10.GL_FLOAT,
-                              BYTES_PER_VERTEX, vertexBuffer);
-
-            gl.glDrawElements(GL10.GL_TRIANGLES, spriteCount * INDICES_PER_SPRITE,
-                              GL10.GL_UNSIGNED_SHORT, indexBuffer);
-
-            gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-            gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-            gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
-            gl.glDisable(GL10.GL_BLEND);
-            gl.glDisable(GL10.GL_TEXTURE_2D);
-        }
-
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
+        glDrawElements(GL_TRIANGLES, INDICES_PER_SPRITE * spriteCount,
+                       GL_UNSIGNED_SHORT, indexBuffer);
     }
 
     public void drawRect(Rect bounds, Color color) {
@@ -114,88 +120,13 @@ public final class Renderer {
         spriteCount++;
     }
 
-    public void drawRect(Vec2 origin, Vec2 size, float angle, Color color) {
-
-        float halfWidth = size.x / 2;
-        float halfHeight = size.y / 2;
-
-        float cos = FloatMath.cos(angle);
-        float sin = FloatMath.sin(angle);
-
-        float xCenter = origin.x + halfWidth;
-        float yCenter = origin.y + halfHeight;
-
-        float x1 = (-halfWidth * cos - (-halfHeight) * sin) + xCenter;
-        float y1 = (-halfWidth * sin + (-halfHeight) * cos) + yCenter;
-        float x2 = (halfWidth * cos - (-halfHeight) * sin) + xCenter;
-        float y2 = (halfWidth * sin + (-halfHeight) * cos) + yCenter;
-        float x3 = (halfWidth * cos - halfHeight * sin) + xCenter;
-        float y3 = (halfWidth * sin + halfHeight * cos) + yCenter;
-        float x4 = (-halfWidth * cos - halfHeight * sin) + xCenter;
-        float y4 = (-halfWidth * sin + halfHeight * cos) + yCenter;
-
-        addVertex(x1, y1, color);
-        addVertex(x2, y2, color);
-        addVertex(x3, y3, color);
-        addVertex(x4, y4, color);
-
-        spriteCount++;
-    }
-
-    public void drawImage(Vec2 origin, Vec2 size, Image image) {
-        addVertex(origin.x, origin.y, image.x, image.y + image.h);
-        addVertex(origin.x + size.x, origin.y, image.x + image.w, image.y + image.h);
-        addVertex(origin.x + size.x, origin.y + size.y, image.x + image.w, image.y);
-        addVertex(origin.x, origin.y + size.y, image.x, image.y);
-
-        spriteCount++;
-    }
-
-    public void drawImage(Vec2 origin, Vec2 size, float angle, Image image) {
-
-        float halfWidth = size.x / 2;
-        float halfHeight = size.y / 2;
-
-        float cos = FloatMath.cos(angle);
-        float sin = FloatMath.sin(angle);
-
-        float xCenter = origin.x + halfWidth;
-        float yCenter = origin.y + halfHeight;
-
-        float x1 = (-halfWidth * cos - (-halfHeight) * sin) + xCenter;
-        float y1 = (-halfWidth * sin + (-halfHeight) * cos) + yCenter;
-        float x2 = (halfWidth * cos - (-halfHeight) * sin) + xCenter;
-        float y2 = (halfWidth * sin + (-halfHeight) * cos) + yCenter;
-        float x3 = (halfWidth * cos - halfHeight * sin) + xCenter;
-        float y3 = (halfWidth * sin + halfHeight * cos) + yCenter;
-        float x4 = (-halfWidth * cos - halfHeight * sin) + xCenter;
-        float y4 = (-halfWidth * sin + halfHeight * cos) + yCenter;
-
-        addVertex(x1, y1, image.x, image.y + image.h);
-        addVertex(x2, y2, image.x + image.w, image.y + image.h);
-        addVertex(x3, y3, image.x + image.w, image.y);
-        addVertex(x4, y4, image.x, image.y);
-
-        spriteCount++;
-    }
-
     private void addVertex(float x, float y) {
-        addVertex(x, y, 0.0f, 0.0f, Color.WHITE);
+        addVertex(x, y, Color.WHITE);
     }
 
     private void addVertex(float x, float y, Color color) {
-        addVertex(x, y, 0.0f, 0.0f, color);
-    }
-
-    private void addVertex(float x, float y, float texX, float texY) {
-        addVertex(x, y, texX, texY, Color.WHITE);
-    }
-
-    private void addVertex(float x, float y, float texX, float texY, Color color) {
         vertices[vertexIndex++] = x;
         vertices[vertexIndex++] = y;
-        vertices[vertexIndex++] = texX;
-        vertices[vertexIndex++] = texY;
         vertices[vertexIndex++] = color.r;
         vertices[vertexIndex++] = color.g;
         vertices[vertexIndex++] = color.b;
@@ -217,34 +148,131 @@ public final class Renderer {
         }
     }
 
-    private final static float GAME_HEIGHT = 360.0f;
+    private String readResource(Resources resources, int id) {
+        StringBuilder body = new StringBuilder();
 
-    private final static int FLOATS_PER_COORDINATE = 2;
-    private final static int FLOATS_PER_TEXTURE = 2;
-    private final static int FLOATS_PER_COLOR = 4;
+        try {
+            InputStream in = resources.openRawResource(id);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-    private final static int FLOATS_PER_VERTEX =
-        FLOATS_PER_COORDINATE + FLOATS_PER_TEXTURE + FLOATS_PER_COLOR;
+            String line;
 
-    private final static int BYTES_PER_FLOAT = 4;
-    private final static int BYTES_PER_SHORT = 2;
+            while ((line = reader.readLine()) != null) {
+                body.append(line);
+                body.append('\n');
+            }
 
-    private final static int BYTES_PER_VERTEX =
+        } catch (IOException ioe) {
+            throw new RuntimeException("Could not open resource: " + id, ioe);
+
+        } catch (Resources.NotFoundException nfe) {
+            throw new RuntimeException("Resource not found: " + id, nfe);
+        }
+
+        return body.toString();
+    }
+
+    private int compileShader(int type, String code) {
+
+        final int shaderId = glCreateShader(type);
+
+        if (shaderId == 0) {
+            Log.w(TAG, "Could not create new shader.");
+            return 0;
+        }
+
+        glShaderSource(shaderId, code);
+        glCompileShader(shaderId);
+
+        final int[] status = new int[1];
+        glGetShaderiv(shaderId, GL_COMPILE_STATUS, status, 0);
+
+        Log.v(TAG, "Shader compilation status: " + glGetShaderInfoLog(shaderId));
+
+        if (status[0] == 0) {
+            glDeleteShader(shaderId);
+            Log.w(TAG, "Shader compilation failed.");
+
+            return 0;
+        }
+
+        return shaderId;
+    }
+
+    private int linkProgram(int vertexShaderId, int fragmentShaderId) {
+
+        final int programId = glCreateProgram();
+
+        if (programId == 0) {
+            Log.w(TAG, "Could not create new program.");
+            return 0;
+        }
+
+        glAttachShader(programId, vertexShaderId);
+        glAttachShader(programId, fragmentShaderId);
+
+        glLinkProgram(programId);
+
+        final int[] status = new int[1];
+        glGetProgramiv(programId, GL_LINK_STATUS, status, 0);
+
+        Log.v(TAG, "Program link status: " + glGetProgramInfoLog(programId));
+
+        if (status[0] == 0) {
+            glDeleteProgram(programId);
+            Log.w(TAG, "Program linking failed.");
+
+            return 0;
+        }
+
+        return programId;
+    }
+
+    private boolean validateProgram(int programId) {
+        glValidateProgram(programId);
+
+        final int[] status = new int[1];
+        glGetProgramiv(programId, GL_VALIDATE_STATUS, status, 0);
+
+        Log.v(TAG, "Validation status: " + status[0] +
+              "\nLog: " + glGetProgramInfoLog(programId));
+
+        return status[0] != 0;
+    }
+
+    private static final float GAME_HEIGHT = 360.0f;
+
+    private static final int FLOATS_PER_POSITION = 2;
+    private static final int FLOATS_PER_TEXTURE = 2;
+    private static final int FLOATS_PER_COLOR = 4;
+
+    private static final int FLOATS_PER_VERTEX =
+        FLOATS_PER_POSITION + FLOATS_PER_COLOR;
+
+    private static final int BYTES_PER_FLOAT = 4;
+    private static final int BYTES_PER_SHORT = 2;
+
+    private static final int BYTES_PER_VERTEX =
         FLOATS_PER_VERTEX * BYTES_PER_FLOAT;
 
-    private final static int VERTICES_PER_SPRITE = 4;
-    private final static int INDICES_PER_SPRITE = 6;
+    private static final int VERTICES_PER_SPRITE = 4;
+    private static final int INDICES_PER_SPRITE = 6;
 
-    private final static int MAX_SPRITES = 1000;
-    private final static int MAX_VERTICES = MAX_SPRITES * VERTICES_PER_SPRITE;
-    private final static int MAX_INDICES = MAX_SPRITES * INDICES_PER_SPRITE;
+    private static final int MAX_SPRITES = 1000;
+    private static final int MAX_VERTICES = MAX_SPRITES * VERTICES_PER_SPRITE;
+    private static final int MAX_INDICES = MAX_SPRITES * INDICES_PER_SPRITE;
 
-    private final static int VERTEX_BUFFER_SIZE =
+    private static final int VERTEX_BUFFER_SIZE =
         MAX_VERTICES * BYTES_PER_VERTEX;
 
-    private final static int VERTEX_ARRAY_SIZE =
+    private static final int VERTEX_ARRAY_SIZE =
         MAX_VERTICES * FLOATS_PER_VERTEX;
 
-    private final static int INDEX_BUFFER_SIZE =
+    private static final int INDEX_BUFFER_SIZE =
         MAX_INDICES * BYTES_PER_SHORT;
+
+    private static final String A_COLOR = "a_Color";
+    private static final String A_POSITION = "a_Position";
+
+    private static final String TAG = "Renderer";
 }
