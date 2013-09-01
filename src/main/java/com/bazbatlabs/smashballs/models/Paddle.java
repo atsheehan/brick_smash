@@ -73,6 +73,22 @@ public final class Paddle implements Collidable {
         toggleAcceleration(direction, false);
     }
 
+    public void hit() {}
+
+    public Vec2 deflect(Vec2 vel, Vec2 collision, Axis axis) {
+        switch (axis) {
+        case X:
+            return new Vec2(-vel.x, vel.y);
+
+        case Y:
+            float rotation = 0.5f - (collision.x - pos.x) / size.x;
+            return (new Vec2(vel.x, -vel.y)).rotate(rotation);
+
+        default:
+            return Vec2.ZERO;
+        }
+    }
+
     private void toggleAcceleration(Direction direction, boolean start) {
         switch (direction) {
         case LEFT: acceleratingLeft = start; break;
@@ -80,6 +96,4 @@ public final class Paddle implements Collidable {
         default: break;
         }
     }
-
-    public void hit() {}
 }

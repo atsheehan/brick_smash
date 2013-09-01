@@ -22,6 +22,14 @@ public final class Brick implements Collidable {
         return state == State.DESTROYED;
     }
 
+    public Vec2 deflect(Vec2 vel, Vec2 collision, Axis axis) {
+        switch (axis) {
+        case X: return new Vec2(-vel.x, vel.y);
+        case Y: return new Vec2(vel.x, -vel.y);
+        default: return Vec2.ZERO;
+        }
+    }
+
     private enum State {
         NORMAL, DESTROYED
     }

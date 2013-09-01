@@ -24,6 +24,11 @@ public final class Vec2 {
         return new Vec2(this.x * factor, this.y * factor);
     }
 
+    public Vec2 rotate(float radians) {
+        return new Vec2((float)(this.x * Math.cos(radians) - this.y * Math.sin(radians)),
+                        (float)(this.x * Math.sin(radians) + this.y * Math.cos(radians)));
+    }
+
     public boolean isWithinRect(Vec2 origin, Vec2 size) {
         return (this.x >= origin.x && this.x <= origin.x + size.x) &&
             (this.y >= origin.y && this.y <= origin.y + size.y);

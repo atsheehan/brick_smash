@@ -53,17 +53,8 @@ public final class Ball {
             center = center.add(actualVel);
 
             // Reverse direction after a collision
-            switch (collision.axis) {
-            case X:
-                vel = new Vec2(-vel.x, vel.y);
-                remainingVel = new Vec2(-remainingVel.x, remainingVel.y);
-                break;
-
-            case Y:
-                vel = new Vec2(vel.x, -vel.y);
-                remainingVel = new Vec2(remainingVel.x, -remainingVel.y);
-                break;
-            }
+            vel = collision.object.deflect(vel, center, collision.axis);
+            remainingVel = collision.object.deflect(remainingVel, center, collision.axis);
 
             collision.object.hit();
             move(remainingVel);
@@ -155,6 +146,4 @@ public final class Ball {
             this.axis = axis;
         }
     }
-
-    private enum Axis { X, Y }
 }

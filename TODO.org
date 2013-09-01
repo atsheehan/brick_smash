@@ -1,0 +1,10 @@
+* deflect different angles off paddle
+* ball starts on paddle initially
+* ball disappears off bottom of screen and lose life
+* limited number of lives available
+* game over if number of lives drops to zero
+* load levels from file
+* multiple brick types
+* add textures
+* transition to OpenGL ES 2.0
+* add sounds
