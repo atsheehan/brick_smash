@@ -2,7 +2,6 @@ package com.bazbatlabs.smashballs.controllers;
 
 import javax.microedition.khronos.opengles.GL10;
 import android.view.KeyEvent;
-import android.content.res.Resources;
 
 import tv.ouya.console.api.OuyaController;
 
@@ -12,16 +11,18 @@ public final class WorldController implements Controller {
 
     private final World world;
     private final Artist artist;
+    private final ImageMap images;
 
-    public WorldController(Resources resources, Artist artist) {
+    public WorldController(Artist artist, ImageMap images) {
         this.world = new World();
         this.artist = artist;
+        this.images = images;
     }
 
     @Override
     public void draw(int screenWidth, int screenHeight) {
         artist.startDrawing();
-        world.draw(artist);
+        world.draw(artist, images);
         artist.finishDrawing(screenWidth, screenHeight);
     }
 

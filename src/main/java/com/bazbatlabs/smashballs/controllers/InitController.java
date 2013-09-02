@@ -10,33 +10,47 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 
 import com.bazbatlabs.smashballs.models.Artist;
+import com.bazbatlabs.smashballs.models.ImageMap;
 
 public final class InitController implements Controller {
 
     private final Resources resources;
     private Artist artist;
+    private ImageMap images;
+    private boolean finished;
 
     public InitController(Resources resources) {
         this.resources = resources;
+        this.finished = false;
 
         // Can't instantiate Artist in here since it needs to happen when there
         // is an Android context available (in the draw, update, or changeSurface
         // methods).
+        this.artist = null;
+        this.images = null;
     }
 
     @Override
     public void draw(int screenWidth, int screenHeight) {
-        if (artist == null) {
-            artist = new Artist(resources, screenWidth, screenHeight);
+        if (!finished) {
+            if (artist == null) {
+                artist = new Artist(resources, screenWidth, screenHeight);
+            }
+
+            if (images == null) {
+                images = new ImageMap(resources);
+            }
+
+            finished = true;
         }
     }
 
     @Override
     public Controller update() {
-        if (artist == null) {
-            return this;
+        if (finished) {
+            return new WorldController(artist, images);
         } else {
-            return new WorldController(resources, artist);
+            return this;
         }
     }
 

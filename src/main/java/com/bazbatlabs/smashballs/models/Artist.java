@@ -26,19 +26,32 @@ public final class Artist {
 
     private int aColorLoc;
     private int aPositionLoc;
+    private int aTextureCoordinatesLoc;
     private int uMatrixLoc;
+    private int uTextureUnitLoc;
 
     private int program;
+    private int texture;
 
     public Artist(Resources resources, int screenWidth, int screenHeight) {
+
+        this.texture = 0;
+
         this.program = ShaderCompiler.buildProgram(R.raw.vertex_shader,
                                                    R.raw.fragment_shader,
                                                    resources);
+        if (this.program == 0) {
+            throw new RuntimeException("Failed to build OpenGL program. Check log for details.");
+        }
+
         glUseProgram(this.program);
 
         this.aColorLoc = glGetAttribLocation(this.program, A_COLOR);
         this.aPositionLoc = glGetAttribLocation(this.program, A_POSITION);
+        this.aTextureCoordinatesLoc = glGetAttribLocation(this.program, A_TEXTURE_COORDINATES);
+
         this.uMatrixLoc = glGetUniformLocation(this.program, U_MATRIX);
+        this.uTextureUnitLoc = glGetUniformLocation(this.program, U_TEXTURE_UNIT);
 
         this.projectionMatrix = new float[16];
         changeSurface(screenWidth, screenHeight);
@@ -69,13 +82,19 @@ public final class Artist {
         this.vertexIndex = 0;
         this.spriteCount = 0;
 
-        vertexBuffer.position(0);
+        vertexBuffer.position(POSITION_START);
         glVertexAttribPointer(aPositionLoc, FLOATS_PER_POSITION, GL_FLOAT,
                               false, BYTES_PER_VERTEX, vertexBuffer);
 
         glEnableVertexAttribArray(aPositionLoc);
 
-        vertexBuffer.position(FLOATS_PER_POSITION);
+        vertexBuffer.position(TEXTURE_START);
+        glVertexAttribPointer(aTextureCoordinatesLoc, FLOATS_PER_TEXTURE, GL_FLOAT,
+                              false, BYTES_PER_VERTEX, vertexBuffer);
+
+        glEnableVertexAttribArray(aTextureCoordinatesLoc);
+
+        vertexBuffer.position(COLOR_START);
         glVertexAttribPointer(aColorLoc, FLOATS_PER_COLOR, GL_FLOAT,
                               false, BYTES_PER_VERTEX, vertexBuffer);
 
@@ -113,6 +132,10 @@ public final class Artist {
 
         glUniformMatrix4fv(uMatrixLoc, 1, false, projectionMatrix, 0);
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glUniform1i(uTextureUnitLoc, 0);
+
         glDrawElements(GL_TRIANGLES, INDICES_PER_SPRITE * spriteCount,
                        GL_UNSIGNED_SHORT, indexBuffer);
     }
@@ -130,13 +153,42 @@ public final class Artist {
         spriteCount++;
     }
 
+    public void drawImage(Rect bounds, Image image) {
+        drawImage(bounds.origin, bounds.size, image);
+    }
+
+    public void drawTest(Vec2 origin, Vec2 size) {
+        drawRect(origin, size, Color.RED);
+    }
+
+    public void drawImage(Vec2 origin, Vec2 size, Image image) {
+        addVertex(origin.x, origin.y, image.x, image.y + image.h);
+        addVertex(origin.x + size.x, origin.y, image.x + image.w, image.y + image.h);
+        addVertex(origin.x + size.x, origin.y + size.y, image.x + image.w, image.y);
+        addVertex(origin.x, origin.y + size.y, image.x, image.y);
+
+        texture = image.textureId;
+
+        spriteCount++;
+    }
+
     private void addVertex(float x, float y) {
         addVertex(x, y, Color.WHITE);
     }
 
     private void addVertex(float x, float y, Color color) {
+        addVertex(x, y, 0f, 0f, color);
+    }
+
+    private void addVertex(float x, float y, float texX, float texY) {
+        addVertex(x, y, texX, texY, Color.WHITE);
+    }
+
+    private void addVertex(float x, float y, float texX, float texY, Color color) {
         vertices[vertexIndex++] = x;
         vertices[vertexIndex++] = y;
+        vertices[vertexIndex++] = texX;
+        vertices[vertexIndex++] = texY;
         vertices[vertexIndex++] = color.r;
         vertices[vertexIndex++] = color.g;
         vertices[vertexIndex++] = color.b;
@@ -165,8 +217,12 @@ public final class Artist {
     private static final int FLOATS_PER_TEXTURE = 2;
     private static final int FLOATS_PER_COLOR = 4;
 
+    private static final int POSITION_START = 0;
+    private static final int TEXTURE_START = POSITION_START + FLOATS_PER_POSITION;
+    private static final int COLOR_START = TEXTURE_START + FLOATS_PER_TEXTURE;
+
     private static final int FLOATS_PER_VERTEX =
-        FLOATS_PER_POSITION + FLOATS_PER_COLOR;
+        FLOATS_PER_POSITION + FLOATS_PER_TEXTURE + FLOATS_PER_COLOR;
 
     private static final int BYTES_PER_FLOAT = 4;
     private static final int BYTES_PER_SHORT = 2;
@@ -192,7 +248,9 @@ public final class Artist {
 
     private static final String A_COLOR = "a_Color";
     private static final String A_POSITION = "a_Position";
+    private static final String A_TEXTURE_COORDINATES = "a_TextureCoordinates";
     private static final String U_MATRIX = "u_Matrix";
+    private static final String U_TEXTURE_UNIT = "u_TextureUnit";
 
     private static final String TAG = "Artist";
 }

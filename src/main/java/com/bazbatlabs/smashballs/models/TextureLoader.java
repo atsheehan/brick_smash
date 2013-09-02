@@ -10,14 +10,14 @@ import static android.opengl.GLES20.*;
 
 public final class TextureLoader {
 
-    public static int loadTexture(int resourceId, Resources resources) {
+    public static Texture load(int resourceId, Resources resources) {
 
         final int[] textureIds = new int[1];
         glGenTextures(1, textureIds, 0);
 
         if (textureIds[0] == 0) {
             Log.w(TAG, "Could not create new OpenGL texture object.");
-            return 0;
+            return null;
         }
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -30,8 +30,11 @@ public final class TextureLoader {
             Log.w(TAG, String.format("Resource ID %d could not be decoded.", resourceId));
 
             glDeleteTextures(1, textureIds, 0);
-            return 0;
+            return null;
         }
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
 
         glBindTexture(GL_TEXTURE_2D, textureIds[0]);
 
@@ -44,7 +47,7 @@ public final class TextureLoader {
 
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        return textureIds[0];
+        return new Texture(textureIds[0], width, height);
     }
 
     private static final String TAG = "TextureLoader";
