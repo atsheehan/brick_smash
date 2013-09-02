@@ -25,6 +25,10 @@ public final class ImageMap {
         this.images.put("BRICK_4", new Image(0f, 52f, 40f, 12f, texture));
         this.images.put("BALL", new Image(0f, 156f, 8f, 8f, texture));
         this.images.put("PADDLE", new Image(0f, 188f, 48f, 12f, texture));
+
+        this.images.put("BORDER_CORNER", new Image(41f, 0f, 6f, 6f, texture));
+        this.images.put("BORDER_TOP", new Image(41f, 7f, 6f, 6f, texture));
+        this.images.put("BORDER_SIDE", new Image(41f, 14f, 6f, 6f, texture));
     }
 
     public Image get(String name) {

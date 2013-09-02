@@ -11,6 +11,7 @@ public final class World {
     private static final float BRICK_WIDTH = WIDTH / BRICKS_PER_ROW;
     private static final float BRICK_HEIGHT = BRICK_WIDTH / 3.0f;
 
+    private final Rect bounds;
     private final Paddle paddle;
     private final Ball ball;
     private final List<Wall> walls;
@@ -20,6 +21,8 @@ public final class World {
     public World() {
         Vec2 origin = Vec2.ZERO;
         Vec2 size = new Vec2(WIDTH, HEIGHT);
+
+        this.bounds = new Rect(origin, size);
 
         this.walls = new ArrayList<Wall>();
 
@@ -38,10 +41,12 @@ public final class World {
             this.bricks.add(new Brick(new Rect(pos, brickSize)));
         }
 
-        this.paddle = new Paddle(new Rect(origin, size), 50f);
+        this.paddle = new Paddle(bounds, 50f);
         this.ball = new Ball(paddle.center(), this);
         this.state = State.NORMAL;
     }
+
+    public Rect bounds() { return bounds; }
 
     public Paddle paddle() { return paddle; }
     public Ball ball() { return ball; }
