@@ -6,24 +6,23 @@ import android.view.KeyEvent;
 import tv.ouya.console.api.OuyaController;
 
 import com.bazbatlabs.smashballs.models.*;
+import com.bazbatlabs.smashballs.views.WorldView;
 
 public final class WorldController implements Controller {
 
     private final World world;
+    private final WorldView view;
     private final Artist artist;
-    private final ImageMap images;
 
     public WorldController(Artist artist, ImageMap images) {
         this.world = new World();
+        this.view = new WorldView(this.world, images, artist);
         this.artist = artist;
-        this.images = images;
     }
 
     @Override
     public void draw(int screenWidth, int screenHeight) {
-        artist.startDrawing();
-        world.draw(artist, images);
-        artist.finishDrawing(screenWidth, screenHeight);
+        view.draw();
     }
 
     @Override

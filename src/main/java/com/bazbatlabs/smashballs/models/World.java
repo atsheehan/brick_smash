@@ -44,6 +44,8 @@ public final class World {
     }
 
     public Paddle paddle() { return paddle; }
+    public Ball ball() { return ball; }
+    public List<Brick> bricks() { return bricks; }
 
     public void update() {
         if (state != State.CLEARED) {
@@ -79,29 +81,6 @@ public final class World {
         collidables.add(paddle);
 
         return collidables;
-    }
-
-    public void draw(Artist artist, ImageMap images) {
-        artist.drawImage(paddle.pos(), paddle.size(), images.get("PADDLE"));
-        artist.drawImage(ball.pos(), ball.size(), images.get("BALL"), Color.GREEN);
-
-        Image[] brickImages = new Image[] {
-            images.get("GREEN_BRICK"),
-            images.get("GREEN_BRICK_1"),
-            images.get("GREEN_BRICK_2"),
-            images.get("GREEN_BRICK_3"),
-            images.get("GREEN_BRICK_4")
-        };
-
-        for (Brick brick : bricks) {
-            if (brick.isBreaking()) {
-                int index = brick.stateCounter() / 4;
-                artist.drawImage(brick.bounds(), brickImages[index]);
-
-            } else {
-                artist.drawImage(brick.bounds(), brickImages[0]);
-            }
-        }
     }
 
     public void startAcceleratingPaddle(Direction direction) {

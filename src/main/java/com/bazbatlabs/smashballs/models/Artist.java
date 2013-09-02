@@ -99,6 +99,7 @@ public final class Artist {
                               false, BYTES_PER_VERTEX, vertexBuffer);
 
         glEnableVertexAttribArray(aColorLoc);
+        glViewport(0, 0, screenWidth, screenHeight);
     }
 
     public void changeSurface(int width, int height) {
@@ -121,12 +122,11 @@ public final class Artist {
         spriteCount = 0;
     }
 
-    public void finishDrawing(int screenWidth, int screenHeight) {
+    public void finishDrawing() {
         vertexBuffer.clear();
         vertexBuffer.put(vertices);
 
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glViewport(0, 0, screenWidth, screenHeight);
 
         glClear(GL_COLOR_BUFFER_BIT);
 

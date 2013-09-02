@@ -18,13 +18,11 @@ public final class ImageMap {
         }
 
         this.images = new HashMap<String, Image>();
-        this.images.put("RED_BRICK", new Image(0f, 0f, 40f, 12f, texture));
-        this.images.put("BLUE_BRICK", new Image(41f, 0f, 40f, 12f, texture));
-        this.images.put("GREEN_BRICK", new Image(82f, 0f, 40f, 12f, texture));
-        this.images.put("GREEN_BRICK_1", new Image(82f, 13f, 40f, 12f, texture));
-        this.images.put("GREEN_BRICK_2", new Image(82f, 26f, 40f, 12f, texture));
-        this.images.put("GREEN_BRICK_3", new Image(82f, 39f, 40f, 12f, texture));
-        this.images.put("GREEN_BRICK_4", new Image(82f, 52f, 40f, 12f, texture));
+        this.images.put("BRICK", new Image(0f, 0f, 40f, 12f, texture));
+        this.images.put("BRICK_1", new Image(0f, 13f, 40f, 12f, texture));
+        this.images.put("BRICK_2", new Image(0f, 26f, 40f, 12f, texture));
+        this.images.put("BRICK_3", new Image(0f, 39f, 40f, 12f, texture));
+        this.images.put("BRICK_4", new Image(0f, 52f, 40f, 12f, texture));
         this.images.put("BALL", new Image(0f, 156f, 8f, 8f, texture));
         this.images.put("PADDLE", new Image(0f, 188f, 48f, 12f, texture));
     }
