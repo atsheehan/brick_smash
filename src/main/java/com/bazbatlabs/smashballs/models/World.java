@@ -83,7 +83,7 @@ public final class World {
 
     public void draw(Artist artist, ImageMap images) {
         artist.drawImage(paddle.pos(), paddle.size(), images.get("PADDLE"));
-        artist.drawImage(ball.pos(), ball.size(), images.get("BALL"));
+        artist.drawImage(ball.pos(), ball.size(), images.get("BALL"), Color.GREEN);
 
         Image brickImage = images.get("GREEN_BRICK");
 

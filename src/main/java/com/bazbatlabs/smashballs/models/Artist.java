@@ -154,18 +154,22 @@ public final class Artist {
     }
 
     public void drawImage(Rect bounds, Image image) {
-        drawImage(bounds.origin, bounds.size, image);
+        drawImage(bounds.origin, bounds.size, image, Color.WHITE);
     }
 
-    public void drawTest(Vec2 origin, Vec2 size) {
-        drawRect(origin, size, Color.RED);
+    public void drawImage(Rect bounds, Image image, Color color) {
+        drawImage(bounds.origin, bounds.size, image, color);
     }
 
     public void drawImage(Vec2 origin, Vec2 size, Image image) {
-        addVertex(origin.x, origin.y, image.x, image.y + image.h);
-        addVertex(origin.x + size.x, origin.y, image.x + image.w, image.y + image.h);
-        addVertex(origin.x + size.x, origin.y + size.y, image.x + image.w, image.y);
-        addVertex(origin.x, origin.y + size.y, image.x, image.y);
+        drawImage(origin, size, image, Color.WHITE);
+    }
+
+    public void drawImage(Vec2 origin, Vec2 size, Image image, Color color) {
+        addVertex(origin.x, origin.y, image.x, image.y + image.h, color);
+        addVertex(origin.x + size.x, origin.y, image.x + image.w, image.y + image.h, color);
+        addVertex(origin.x + size.x, origin.y + size.y, image.x + image.w, image.y, color);
+        addVertex(origin.x, origin.y + size.y, image.x, image.y, color);
 
         texture = image.textureId;
 
