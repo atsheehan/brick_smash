@@ -101,7 +101,15 @@ public final class Artist {
     public void changeSurface(int width, int height) {
         Vec2 dimensions = gameDimensions(width, height);
 
-        Matrix.orthoM(projectionMatrix, 0, 0f, dimensions.x, 0f, dimensions.y, -1f, 1f);
+        float xOffset = (dimensions.x - World.WIDTH) / 2f;
+        float yOffset = (dimensions.y - World.HEIGHT) / 2f;
+
+        float left = -xOffset;
+        float right = World.WIDTH + xOffset;
+        float bottom = -yOffset;
+        float top = World.HEIGHT + yOffset;
+
+        Matrix.orthoM(projectionMatrix, 0, left, right, bottom, top, -1f, 1f);
         glViewport(0, 0, width, height);
     }
 
@@ -258,7 +266,8 @@ public final class Artist {
         return status[0] != 0;
     }
 
-    private static final float GAME_HEIGHT = 360.0f;
+    private static final float GAME_HEIGHT = World.HEIGHT * 1.2f;
+    private static final float GAME_WIDTH = World.WIDTH * 1.2f;
 
     private static final int FLOATS_PER_POSITION = 2;
     private static final int FLOATS_PER_TEXTURE = 2;

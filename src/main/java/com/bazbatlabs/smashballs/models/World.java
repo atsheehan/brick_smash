@@ -4,8 +4,8 @@ import java.util.*;
 
 public final class World {
 
-    private static final float WIDTH = 400.0f;
-    private static final float HEIGHT = 300.0f;
+    public static final float WIDTH = 400.0f;
+    public static final float HEIGHT = 300.0f;
 
     private static final int BRICKS_PER_ROW = 16;
     private static final float BRICK_WIDTH = WIDTH / BRICKS_PER_ROW;
