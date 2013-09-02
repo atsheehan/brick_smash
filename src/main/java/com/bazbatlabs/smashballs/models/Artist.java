@@ -1,10 +1,5 @@
 package com.bazbatlabs.smashballs.models;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
@@ -36,20 +31,9 @@ public final class Artist {
     private int program;
 
     public Artist(Resources resources, int screenWidth, int screenHeight) {
-        String vertexSource = readResource(resources, R.raw.vertex_shader);
-        String fragmentSource = readResource(resources, R.raw.fragment_shader);
-
-        // TODO: check for error return values
-        int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
-        int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
-
-        this.program = linkProgram(vertexShader, fragmentShader);
-
-        validateProgram(this.program);
-
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
-
+        this.program = ShaderCompiler.buildProgram(R.raw.vertex_shader,
+                                                   R.raw.fragment_shader,
+                                                   resources);
         glUseProgram(this.program);
 
         this.aColorLoc = glGetAttribLocation(this.program, A_COLOR);
@@ -172,98 +156,6 @@ public final class Artist {
             float ratio = screenWidth / screenHeight;
             return new Vec2(GAME_HEIGHT * ratio, GAME_HEIGHT);
         }
-    }
-
-    private String readResource(Resources resources, int id) {
-        StringBuilder body = new StringBuilder();
-
-        try {
-            InputStream in = resources.openRawResource(id);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                body.append(line);
-                body.append('\n');
-            }
-
-        } catch (IOException ioe) {
-            throw new RuntimeException("Could not open resource: " + id, ioe);
-
-        } catch (Resources.NotFoundException nfe) {
-            throw new RuntimeException("Resource not found: " + id, nfe);
-        }
-
-        return body.toString();
-    }
-
-    private int compileShader(int type, String code) {
-
-        final int shaderId = glCreateShader(type);
-
-        if (shaderId == 0) {
-            Log.w(TAG, "Could not create new shader.");
-            return 0;
-        }
-
-        glShaderSource(shaderId, code);
-        glCompileShader(shaderId);
-
-        final int[] status = new int[1];
-        glGetShaderiv(shaderId, GL_COMPILE_STATUS, status, 0);
-
-        Log.v(TAG, "Shader compilation status: " + glGetShaderInfoLog(shaderId));
-
-        if (status[0] == 0) {
-            glDeleteShader(shaderId);
-            Log.w(TAG, "Shader compilation failed.");
-
-            return 0;
-        }
-
-        return shaderId;
-    }
-
-    private int linkProgram(int vertexShaderId, int fragmentShaderId) {
-
-        final int programId = glCreateProgram();
-
-        if (programId == 0) {
-            Log.w(TAG, "Could not create new program.");
-            return 0;
-        }
-
-        glAttachShader(programId, vertexShaderId);
-        glAttachShader(programId, fragmentShaderId);
-
-        glLinkProgram(programId);
-
-        final int[] status = new int[1];
-        glGetProgramiv(programId, GL_LINK_STATUS, status, 0);
-
-        Log.v(TAG, "Program link status: " + glGetProgramInfoLog(programId));
-
-        if (status[0] == 0) {
-            glDeleteProgram(programId);
-            Log.w(TAG, "Program linking failed.");
-
-            return 0;
-        }
-
-        return programId;
-    }
-
-    private boolean validateProgram(int programId) {
-        glValidateProgram(programId);
-
-        final int[] status = new int[1];
-        glGetProgramiv(programId, GL_VALIDATE_STATUS, status, 0);
-
-        Log.v(TAG, "Validation status: " + status[0] +
-              "\nLog: " + glGetProgramInfoLog(programId));
-
-        return status[0] != 0;
     }
 
     private static final float GAME_HEIGHT = World.HEIGHT * 1.2f;
