@@ -85,10 +85,22 @@ public final class World {
         artist.drawImage(paddle.pos(), paddle.size(), images.get("PADDLE"));
         artist.drawImage(ball.pos(), ball.size(), images.get("BALL"), Color.GREEN);
 
-        Image brickImage = images.get("GREEN_BRICK");
+        Image[] brickImages = new Image[] {
+            images.get("GREEN_BRICK"),
+            images.get("GREEN_BRICK_1"),
+            images.get("GREEN_BRICK_2"),
+            images.get("GREEN_BRICK_3"),
+            images.get("GREEN_BRICK_4")
+        };
 
         for (Brick brick : bricks) {
-            artist.drawImage(brick.bounds(), brickImage);
+            if (brick.isBreaking()) {
+                int index = brick.stateCounter() / 4;
+                artist.drawImage(brick.bounds(), brickImages[index]);
+
+            } else {
+                artist.drawImage(brick.bounds(), brickImages[0]);
+            }
         }
     }
 

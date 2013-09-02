@@ -2,24 +2,39 @@ package com.bazbatlabs.smashballs.models;
 
 public final class Brick implements Collidable {
 
+    private static final int BREAKING_DURATION = 19;
+
     private final Rect bounds;
     private State state;
+    private int stateCounter;
 
     public Brick(Rect bounds) {
         this.bounds = bounds;
         this.state = State.NORMAL;
+        this.stateCounter = 0;
     }
+
+    public boolean isActive() { return state == State.NORMAL; }
+    public boolean isDestroyed() { return state == State.DESTROYED; }
+    public boolean isBreaking() { return state == State.BREAKING; }
+    public int stateCounter() { return stateCounter; }
 
     public Rect bounds() { return bounds; }
 
     public void hit() {
-        state = State.DESTROYED;
+        if (state == State.NORMAL) {
+            state = State.BREAKING;
+        }
     }
 
-    public void update() {}
+    public void update() {
+        if (state == State.BREAKING) {
+            stateCounter++;
 
-    public boolean isDestroyed() {
-        return state == State.DESTROYED;
+            if (stateCounter > BREAKING_DURATION) {
+                state = State.DESTROYED;
+            }
+        }
     }
 
     public Vec2 deflect(Vec2 vel, Vec2 collision, Axis axis) {
@@ -31,6 +46,6 @@ public final class Brick implements Collidable {
     }
 
     private enum State {
-        NORMAL, DESTROYED
+        NORMAL, BREAKING, DESTROYED
     }
 }

@@ -101,4 +101,6 @@ public final class Paddle implements Collidable {
         default: break;
         }
     }
+
+    public boolean isActive() { return true; }
 }

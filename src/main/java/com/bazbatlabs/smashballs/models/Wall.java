@@ -18,4 +18,6 @@ public final class Wall implements Collidable {
         default: return Vec2.ZERO;
         }
     }
+
+    public boolean isActive() { return true; }
 }

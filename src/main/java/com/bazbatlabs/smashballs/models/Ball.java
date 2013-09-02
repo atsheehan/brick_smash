@@ -58,7 +58,9 @@ public final class Ball {
         Collision collision = Collision.NONE;
 
         for (Collidable collidable : world.collidables()) {
-            collision = nearestCollision(collidable, effectiveVel, newCenter, collision);
+            if (collidable.isActive()) {
+                collision = nearestCollision(collidable, effectiveVel, newCenter, collision);
+            }
         }
 
         if (collision.distance < 1.0f) {
