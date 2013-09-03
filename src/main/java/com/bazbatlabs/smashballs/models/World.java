@@ -7,7 +7,7 @@ public final class World {
     public static final float WIDTH = 400.0f;
     public static final float HEIGHT = 300.0f;
 
-    private static final int INITIAL_CHANCES = 3;
+    private static final int INITIAL_CHANCES = 30;
     private static final int BRICKS_PER_ROW = 16;
     private static final float BRICK_WIDTH = WIDTH / BRICKS_PER_ROW;
     private static final float BRICK_HEIGHT = BRICK_WIDTH / 3.0f;
