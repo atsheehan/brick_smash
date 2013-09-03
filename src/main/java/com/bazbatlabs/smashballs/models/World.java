@@ -7,6 +7,7 @@ public final class World {
     public static final float WIDTH = 400.0f;
     public static final float HEIGHT = 300.0f;
 
+    private static final int INITIAL_CHANCES = 3;
     private static final int BRICKS_PER_ROW = 16;
     private static final float BRICK_WIDTH = WIDTH / BRICKS_PER_ROW;
     private static final float BRICK_HEIGHT = BRICK_WIDTH / 3.0f;
@@ -17,12 +18,15 @@ public final class World {
     private final List<Wall> walls;
     private final List<Brick> bricks;
     private State state;
+    private int chancesRemaining;
 
     public World() {
         Vec2 origin = Vec2.ZERO;
         Vec2 size = new Vec2(WIDTH, HEIGHT);
 
         this.bounds = new Rect(origin, size);
+
+        this.chancesRemaining = INITIAL_CHANCES;
 
         this.walls = new ArrayList<Wall>();
 
@@ -53,7 +57,7 @@ public final class World {
     public List<Brick> bricks() { return bricks; }
 
     public void update() {
-        if (state != State.CLEARED) {
+        if (state == State.NORMAL) {
             paddle.update();
             ball.update();
 
@@ -68,7 +72,14 @@ public final class World {
             }
 
             if (ball.isLost()) {
-                ball.reset(paddle.center());
+
+                chancesRemaining--;
+
+                if (chancesRemaining > 0) {
+                    ball.reset(paddle.center());
+                } else {
+                    state = State.GAME_OVER;
+                }
             }
         }
     }
@@ -115,7 +126,10 @@ public final class World {
         ball.kickstart(angle);
     }
 
+    public boolean isGameOver() { return state == State.GAME_OVER; }
+    public boolean isCleared() { return state == State.CLEARED; }
+
     private enum State {
-        NORMAL, CLEARED
+        NORMAL, CLEARED, GAME_OVER
     }
 }

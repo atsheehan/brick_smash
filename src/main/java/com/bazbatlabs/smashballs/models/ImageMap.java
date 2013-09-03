@@ -26,6 +26,8 @@ public final class ImageMap {
         this.images.put("BALL", new Image(0f, 156f, 8f, 8f, texture));
         this.images.put("PADDLE", new Image(0f, 188f, 48f, 12f, texture));
 
+        this.images.put("GAME_OVER", new Image(74f, 65f, 128f, 16f, texture));
+
         this.images.put("BORDER_CORNER", new Image(41f, 0f, 6f, 6f, texture));
         this.images.put("BORDER_TOP", new Image(41f, 7f, 6f, 6f, texture));
         this.images.put("BORDER_SIDE", new Image(41f, 14f, 6f, 6f, texture));

@@ -79,6 +79,15 @@ public final class WorldView {
         artist.drawImage(leftCap, images.get("BORDER_CORNER"));
         artist.drawImage(rightCap, images.get("BORDER_CORNER"));
 
+        if (world.isGameOver()) {
+            Rect bounds = world.bounds();
+
+            Vec2 size = new Vec2(bounds.size.x / 1.5f, bounds.size.y / 5f);
+            Vec2 origin = new Vec2((bounds.size.x - size.x) / 2f, (bounds.size.y - size.y) / 2f);
+
+            artist.drawImage(new Rect(origin, size), images.get("GAME_OVER"));
+        }
+
 
         artist.finishDrawing();
     }
