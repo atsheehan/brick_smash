@@ -26,7 +26,6 @@ public final class World {
 
         this.walls = new ArrayList<Wall>();
 
-        this.walls.add(new Wall(new Rect(origin, new Vec2(size.x, 0.0f))));
         this.walls.add(new Wall(new Rect(origin, new Vec2(0.0f, size.y))));
         this.walls.add(new Wall(new Rect(new Vec2(origin.x, origin.y + size.y),
                                          new Vec2(size.x, 0.0f))));
@@ -46,6 +45,7 @@ public final class World {
         this.state = State.NORMAL;
     }
 
+    public float floor() { return bounds.bottom(); }
     public Rect bounds() { return bounds; }
 
     public Paddle paddle() { return paddle; }
@@ -65,6 +65,10 @@ public final class World {
 
             if (bricks.isEmpty()) {
                 state = State.CLEARED;
+            }
+
+            if (ball.isLost()) {
+                ball.reset(paddle.center());
             }
         }
     }

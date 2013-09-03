@@ -28,8 +28,14 @@ public final class Ball {
         this.state = State.STUCK;
     }
 
+    public void reset(Vec2 center) {
+        this.center = new Vec2(center.x, center.y + RADIUS);
+        this.state = State.STUCK;
+    }
+
     public Vec2 pos() { return center.subtract(halfSize); }
     public Vec2 size() { return size; }
+    public boolean isLost() { return state == State.LOST; }
 
     public void kickstart(float angleInRadians) {
         if (state == State.STUCK){
@@ -47,6 +53,13 @@ public final class Ball {
 
         case MOVING:
             move(vel);
+
+            if (center.y - RADIUS < world.floor()) {
+                state = State.LOST;
+            }
+            break;
+
+        default:
             break;
         }
     }
@@ -165,6 +178,6 @@ public final class Ball {
     }
 
     private enum State {
-        STUCK, MOVING
+        STUCK, MOVING, LOST
     }
 }
