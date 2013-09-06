@@ -7,11 +7,18 @@ public final class Brick implements Collidable {
     private final Rect bounds;
     private State state;
     private int stateCounter;
+    private int durability;
 
-    public Brick(Rect bounds) {
+    public Brick(Rect bounds, Type type) {
         this.bounds = bounds;
         this.state = State.NORMAL;
         this.stateCounter = 0;
+
+        if (type == Type.TOUGH) {
+            this.durability = 2;
+        } else {
+            this.durability = 1;
+        }
     }
 
     public boolean isActive() { return state == State.NORMAL; }
@@ -23,7 +30,11 @@ public final class Brick implements Collidable {
 
     public void hit() {
         if (state == State.NORMAL) {
-            state = State.BREAKING;
+            durability--;
+
+            if (durability <= 0) {
+                state = State.BREAKING;
+            }
         }
     }
 
@@ -47,5 +58,9 @@ public final class Brick implements Collidable {
 
     private enum State {
         NORMAL, BREAKING, DESTROYED
+    }
+
+    public enum Type {
+        NORMAL, TOUGH
     }
 }

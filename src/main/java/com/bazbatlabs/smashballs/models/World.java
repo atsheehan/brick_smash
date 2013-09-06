@@ -41,7 +41,7 @@ public final class World {
         this.bricks = new ArrayList<Brick>();
         for (int i = 0; i < BRICKS_PER_ROW; i++) {
             Vec2 pos = new Vec2(origin.x + (i * BRICK_WIDTH), 250.0f);
-            this.bricks.add(new Brick(new Rect(pos, brickSize)));
+            this.bricks.add(new Brick(new Rect(pos, brickSize), Brick.Type.TOUGH));
         }
 
         this.paddle = new Paddle(bounds, 50f);
