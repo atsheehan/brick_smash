@@ -14,9 +14,11 @@ public final class WorldController implements Controller {
     private final WorldView view;
     private final Artist artist;
 
-    public WorldController(Artist artist, ImageMap images) {
-        this.world = new World();
-        this.view = new WorldView(this.world, images, artist);
+    public WorldController(Artist artist, ImageMap images, SoundMap sounds) {
+        WorldEvents events = new WorldEvents();
+
+        this.world = new World(events);
+        this.view = new WorldView(this.world, events, images, sounds, artist);
         this.artist = artist;
     }
 

@@ -3,13 +3,18 @@ package com.bazbatlabs.smashballs.models;
 public final class Wall implements Collidable {
 
     private final Rect bounds;
+    private final WorldEvents events;
 
-    public Wall(Rect bounds) {
+    public Wall(Rect bounds, WorldEvents events) {
         this.bounds = bounds;
+        this.events = events;
     }
 
     public Rect bounds() { return bounds; }
-    public void hit() {}
+
+    public void hit() {
+        events.enqueue(WorldEvents.Event.WALL_HIT);
+    }
 
     public Vec2 deflect(Vec2 vel, Vec2 collision, Axis axis) {
         switch (axis) {

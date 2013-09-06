@@ -1,13 +1,17 @@
 package com.bazbatlabs.smashballs.views;
 
 import com.bazbatlabs.smashballs.models.*;
+import com.bazbatlabs.smashballs.models.WorldEvents.Event;
 
 public final class WorldView {
 
     public static final float BORDER_WIDTH = 6f;
 
     private final World world;
+    private final WorldEvents events;
+
     private final ImageMap images;
+    private final SoundMap sounds;
     private final Artist artist;
 
     private final Rect leftBorder;
@@ -17,9 +21,13 @@ public final class WorldView {
     private final Rect rightCap;
 
 
-    public WorldView(World world, ImageMap images, Artist artist) {
+    public WorldView(World world, WorldEvents events,
+                     ImageMap images, SoundMap sounds, Artist artist) {
         this.world = world;
+        this.events = events;
+
         this.images = images;
+        this.sounds = sounds;
         this.artist = artist;
 
         Rect bounds = world.bounds();
@@ -46,6 +54,23 @@ public final class WorldView {
     }
 
     public void draw() {
+
+        while (events.hasNext()) {
+            Event event = events.dequeue();
+
+            switch (event) {
+            case WALL_HIT:
+            case BRICK_HIT:
+                sounds.play(SoundMap.Sound.BLIP);
+                break;
+
+            case PADDLE_HIT:
+                sounds.play(SoundMap.Sound.BLIP_LOW);
+                break;
+            }
+        }
+
+
         Paddle paddle = world.paddle();
         Ball ball = world.ball();
 

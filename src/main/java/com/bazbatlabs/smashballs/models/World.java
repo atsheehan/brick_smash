@@ -17,34 +17,36 @@ public final class World {
     private final Ball ball;
     private final List<Wall> walls;
     private final List<Brick> bricks;
+    private final WorldEvents events;
     private State state;
     private int chancesRemaining;
 
-    public World() {
+    public World(WorldEvents events) {
         Vec2 origin = Vec2.ZERO;
         Vec2 size = new Vec2(WIDTH, HEIGHT);
 
         this.bounds = new Rect(origin, size);
+        this.events = events;
 
         this.chancesRemaining = INITIAL_CHANCES;
 
         this.walls = new ArrayList<Wall>();
 
-        this.walls.add(new Wall(new Rect(origin, new Vec2(0.0f, size.y))));
+        this.walls.add(new Wall(new Rect(origin, new Vec2(0.0f, size.y)), events));
         this.walls.add(new Wall(new Rect(new Vec2(origin.x, origin.y + size.y),
-                                         new Vec2(size.x, 0.0f))));
+                                         new Vec2(size.x, 0.0f)), events));
         this.walls.add(new Wall(new Rect(new Vec2(origin.x + size.x, origin.y),
-                                         new Vec2(0.0f, size.y))));
+                                         new Vec2(0.0f, size.y)), events));
 
         Vec2 brickSize = new Vec2(BRICK_WIDTH, BRICK_HEIGHT);
 
         this.bricks = new ArrayList<Brick>();
         for (int i = 0; i < BRICKS_PER_ROW; i++) {
             Vec2 pos = new Vec2(origin.x + (i * BRICK_WIDTH), 250.0f);
-            this.bricks.add(new Brick(new Rect(pos, brickSize), Brick.Type.TOUGH));
+            this.bricks.add(new Brick(new Rect(pos, brickSize), Brick.Type.TOUGH, events));
         }
 
-        this.paddle = new Paddle(bounds, 50f);
+        this.paddle = new Paddle(bounds, 50f, events);
         this.ball = new Ball(paddle.center(), this);
         this.state = State.NORMAL;
     }

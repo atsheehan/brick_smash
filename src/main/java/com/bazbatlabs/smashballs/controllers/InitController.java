@@ -11,12 +11,14 @@ import android.media.SoundPool;
 
 import com.bazbatlabs.smashballs.models.Artist;
 import com.bazbatlabs.smashballs.models.ImageMap;
+import com.bazbatlabs.smashballs.models.SoundMap;
 
 public final class InitController implements Controller {
 
     private final Resources resources;
     private Artist artist;
     private ImageMap images;
+    private SoundMap sounds;
     private boolean finished;
 
     public InitController(Resources resources) {
@@ -28,6 +30,7 @@ public final class InitController implements Controller {
         // methods).
         this.artist = null;
         this.images = null;
+        this.sounds = null;
     }
 
     @Override
@@ -41,6 +44,10 @@ public final class InitController implements Controller {
                 images = new ImageMap(resources);
             }
 
+            if (sounds == null) {
+                sounds = new SoundMap(resources);
+            }
+
             finished = true;
         }
     }
@@ -48,7 +55,7 @@ public final class InitController implements Controller {
     @Override
     public Controller update() {
         if (finished) {
-            return new WorldController(artist, images);
+            return new WorldController(artist, images, sounds);
         } else {
             return this;
         }

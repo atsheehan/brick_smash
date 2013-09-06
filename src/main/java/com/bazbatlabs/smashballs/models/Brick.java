@@ -4,12 +4,17 @@ public final class Brick implements Collidable {
 
     private static final int BREAKING_DURATION = 19;
 
+    private final WorldEvents events;
+
     private final Rect bounds;
     private State state;
     private int stateCounter;
     private int durability;
 
-    public Brick(Rect bounds, Type type) {
+    public Brick(Rect bounds, Type type, WorldEvents events) {
+
+        this.events = events;
+
         this.bounds = bounds;
         this.state = State.NORMAL;
         this.stateCounter = 0;
@@ -29,6 +34,8 @@ public final class Brick implements Collidable {
     public Rect bounds() { return bounds; }
 
     public void hit() {
+        events.enqueue(WorldEvents.Event.BRICK_HIT);
+
         if (state == State.NORMAL) {
             durability--;
 

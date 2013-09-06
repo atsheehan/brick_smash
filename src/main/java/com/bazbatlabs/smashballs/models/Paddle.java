@@ -11,6 +11,7 @@ public final class Paddle implements Collidable {
     private final Rect bounds;
 
     private final Vec2 size;
+    private final WorldEvents events;
 
     private Vec2 pos;
     private Vec2 vel;
@@ -18,7 +19,9 @@ public final class Paddle implements Collidable {
     private boolean acceleratingLeft;
     private boolean acceleratingRight;
 
-    public Paddle(Rect bounds, float startY) {
+    public Paddle(Rect bounds, float startY, WorldEvents events) {
+
+        this.events = events;
 
         this.acceleratingLeft = false;
         this.acceleratingRight = false;
@@ -78,7 +81,9 @@ public final class Paddle implements Collidable {
         return new Vec2(pos.x + (size.x / 2.0f), pos.y + size.y);
     }
 
-    public void hit() {}
+    public void hit() {
+        events.enqueue(WorldEvents.Event.PADDLE_HIT);
+    }
 
     public Vec2 deflect(Vec2 vel, Vec2 collision, Axis axis) {
         switch (axis) {
