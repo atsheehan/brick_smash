@@ -1,6 +1,5 @@
 package com.bazbatlabs.smashballs.controllers;
 
-import javax.microedition.khronos.opengles.GL10;
 import android.view.KeyEvent;
 
 import tv.ouya.console.api.OuyaController;

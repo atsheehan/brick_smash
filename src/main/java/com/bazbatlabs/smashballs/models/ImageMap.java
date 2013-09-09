@@ -32,6 +32,8 @@ public final class ImageMap {
         this.images.put("BORDER_CORNER", new Image(41f, 0f, 6f, 6f, texture));
         this.images.put("BORDER_TOP", new Image(41f, 7f, 6f, 6f, texture));
         this.images.put("BORDER_SIDE", new Image(41f, 14f, 6f, 6f, texture));
+
+        this.images.put("TITLE", new Image(2f, 120f, 187f, 16f, texture));
     }
 
     public Image get(String name) {

@@ -55,7 +55,8 @@ public final class InitController implements Controller {
     @Override
     public Controller update() {
         if (finished) {
-            return new WorldController(artist, images, sounds);
+            WorldController worldController = new WorldController(artist, images, sounds);
+            return new MenuController(artist, images, sounds, worldController);
         } else {
             return this;
         }

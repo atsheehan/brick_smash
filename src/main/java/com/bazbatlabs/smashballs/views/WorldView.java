@@ -77,7 +77,7 @@ public final class WorldView {
         artist.startDrawing();
 
         artist.drawImage(paddle.pos(), paddle.size(), images.get("PADDLE"));
-        artist.drawImage(ball.pos(), ball.size(), images.get("BALL"), Color.GREEN);
+        artist.drawImage(ball.pos(), ball.size(), images.get("BALL"));
 
         Image[] brickImages = new Image[] {
             images.get("BRICK"),
