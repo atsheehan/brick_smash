@@ -1,5 +1,7 @@
 package com.bazbatlabs.smashballs.models;
 
+import android.util.Log;
+
 import java.util.AbstractMap.SimpleEntry;
 
 public final class Ball {
@@ -76,7 +78,7 @@ public final class Ball {
             }
         }
 
-        if (collision.distance < 1.0f) {
+        if (collision.distance <= 1.0f) {
             Vec2 actualVel = effectiveVel.scale(collision.distance);
             Vec2 remainingVel = effectiveVel.subtract(actualVel);
 
@@ -105,7 +107,7 @@ public final class Ball {
         float right = bounds.right() + RADIUS;
 
         if (effectiveVel.y < 0.0f) {
-            if (center.y > top && newCenter.y < top) {
+            if (center.y >= top && newCenter.y <= top) {
                 float distance = (top - center.y) / (newCenter.y - center.y);
 
                 if (distance < bestCollision.distance) {
@@ -119,7 +121,7 @@ public final class Ball {
         }
 
         if (effectiveVel.y > 0.0f) {
-            if (center.y < bottom && newCenter.y > bottom) {
+            if (center.y <= bottom && newCenter.y >= bottom) {
                 float distance = (bottom - center.y) / (newCenter.y - center.y);
 
                 if (distance < bestCollision.distance) {
@@ -133,7 +135,7 @@ public final class Ball {
         }
 
         if (effectiveVel.x < 0.0f) {
-            if (center.x > right && newCenter.x < right) {
+            if (center.x >= right && newCenter.x <= right) {
                 float distance = (right - center.x) / (newCenter.x - center.x);
 
                 if (distance < bestCollision.distance) {
@@ -147,7 +149,7 @@ public final class Ball {
         }
 
         if (effectiveVel.x > 0.0f) {
-            if (center.x < left && newCenter.x > left) {
+            if (center.x <= left && newCenter.x >= left) {
                 float distance = (left - center.x) / (newCenter.x - center.x);
 
                 if (distance < bestCollision.distance) {
