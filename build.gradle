@@ -1,0 +1,31 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:0.6.1'
+  }
+}
+
+apply plugin: 'android'
+
+android {
+  buildToolsVersion '18.1.0'
+  compileSdkVersion 16
+}
+
+dependencies {
+  compile files('./lib/ouya-sdk.jar')
+}
+
+task runDebug(dependsOn: 'installDebug') << {
+  exec {
+    executable = 'adb'
+    args = ['shell', 'am', 'start', '-c',
+            'android.intent.category.LAUNCHER', '-n',
+            'com.bazbatlabs.smashballs/.SmashballsActivity']
+
+
+  }
+}

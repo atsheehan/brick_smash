@@ -1,10 +1,9 @@
-# Build artifacts
-bin/
-gen/
-target/
-
 # Emacs/vim autosave files
 *~
 
 # TODO list
 /TODO.org
+
+# Build artifacts
+/.gradle
+/build
