@@ -1,6 +1,6 @@
-package com.bazbatlabs.smashballs.views;
+package com.bazbatlabs.bricksmash.views;
 
-import com.bazbatlabs.smashballs.models.*;
+import com.bazbatlabs.bricksmash.models.*;
 
 public final class MenuView {
 

@@ -1,10 +1,10 @@
-package com.bazbatlabs.smashballs.models;
+package com.bazbatlabs.bricksmash.models;
 
 import java.util.Map;
 import java.util.HashMap;
 
 import android.content.res.Resources;
-import com.bazbatlabs.smashballs.R;
+import com.bazbatlabs.bricksmash.R;
 
 public final class ImageMap {
 

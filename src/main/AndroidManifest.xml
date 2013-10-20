@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.bazbatlabs.smashballs">
-  <application android:icon="@drawable/android:star_big_on" android:label="Smashballs" android:debuggable="true">
-    <activity android:name=".SmashballsActivity"
-              android:label="Smashballs"
+          package="com.bazbatlabs.bricksmash">
+  <application android:icon="@drawable/android:star_big_on" android:label="BrickSmash" android:debuggable="true">
+    <activity android:name=".BrickSmashActivity"
+              android:label="BrickSmash"
               android:configChanges="keyboard|keyboardHidden|orientation"
               android:screenOrientation="landscape">
       <intent-filter>

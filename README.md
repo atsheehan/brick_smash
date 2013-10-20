@@ -1,3 +1,3 @@
-# SMASHBALLS
+# BRICKSMASH
 
-A Pong-clone for the OUYA.
+A Breakout clone for the OUYA.

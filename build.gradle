@@ -24,7 +24,7 @@ task runDebug(dependsOn: 'installDebug') << {
     executable = 'adb'
     args = ['shell', 'am', 'start', '-c',
             'android.intent.category.LAUNCHER', '-n',
-            'com.bazbatlabs.smashballs/.SmashballsActivity']
+            'com.bazbatlabs.bricksmash/.BrickSmashActivity']
 
 
   }

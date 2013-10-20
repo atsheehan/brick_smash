@@ -1,4 +1,4 @@
-package com.bazbatlabs.smashballs.controllers;
+package com.bazbatlabs.bricksmash.controllers;
 
 import java.io.*;
 
@@ -9,9 +9,9 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-import com.bazbatlabs.smashballs.models.Artist;
-import com.bazbatlabs.smashballs.models.ImageMap;
-import com.bazbatlabs.smashballs.models.SoundMap;
+import com.bazbatlabs.bricksmash.models.Artist;
+import com.bazbatlabs.bricksmash.models.ImageMap;
+import com.bazbatlabs.bricksmash.models.SoundMap;
 
 public final class InitController implements Controller {
 

@@ -1,4 +1,4 @@
-package com.bazbatlabs.smashballs;
+package com.bazbatlabs.bricksmash;
 
 import android.util.Log;
 import android.os.Bundle;
@@ -17,11 +17,11 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 import tv.ouya.console.api.OuyaController;
 
-import com.bazbatlabs.smashballs.controllers.*;
+import com.bazbatlabs.bricksmash.controllers.*;
 
-public final class SmashballsActivity extends Activity implements GLSurfaceView.Renderer  {
+public final class BrickSmashActivity extends Activity implements GLSurfaceView.Renderer  {
 
-    private static final String TAG = "SmashballsActivity";
+    private static final String TAG = "BrickSmashActivity";
 
     private static final int LOG_FPS_INTERVAL = 100;
 

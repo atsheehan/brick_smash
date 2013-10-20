@@ -1,4 +1,4 @@
-package com.bazbatlabs.smashballs.models;
+package com.bazbatlabs.bricksmash.models;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -11,7 +11,7 @@ import android.opengl.Matrix;
 
 import static android.opengl.GLES20.*;
 
-import com.bazbatlabs.smashballs.R;
+import com.bazbatlabs.bricksmash.R;
 
 public final class Artist {
 

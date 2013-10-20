@@ -1,4 +1,4 @@
-package com.bazbatlabs.smashballs.models;
+package com.bazbatlabs.bricksmash.models;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

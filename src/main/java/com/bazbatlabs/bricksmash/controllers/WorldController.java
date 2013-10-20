@@ -1,11 +1,11 @@
-package com.bazbatlabs.smashballs.controllers;
+package com.bazbatlabs.bricksmash.controllers;
 
 import android.view.KeyEvent;
 
 import tv.ouya.console.api.OuyaController;
 
-import com.bazbatlabs.smashballs.models.*;
-import com.bazbatlabs.smashballs.views.WorldView;
+import com.bazbatlabs.bricksmash.models.*;
+import com.bazbatlabs.bricksmash.views.WorldView;
 
 public final class WorldController implements Controller {
 

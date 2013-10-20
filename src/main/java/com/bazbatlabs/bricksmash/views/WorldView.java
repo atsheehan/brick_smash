@@ -1,7 +1,7 @@
-package com.bazbatlabs.smashballs.views;
+package com.bazbatlabs.bricksmash.views;
 
-import com.bazbatlabs.smashballs.models.*;
-import com.bazbatlabs.smashballs.models.WorldEvents.Event;
+import com.bazbatlabs.bricksmash.models.*;
+import com.bazbatlabs.bricksmash.models.WorldEvents.Event;
 
 public final class WorldView {
 
