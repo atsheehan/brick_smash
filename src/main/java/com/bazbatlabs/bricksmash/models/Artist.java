@@ -105,8 +105,8 @@ public final class Artist {
     public void changeSurface(int width, int height) {
         Vec2 dimensions = gameDimensions(width, height);
 
-        float xOffset = (dimensions.x - World.WIDTH) / 2f;
-        float yOffset = (dimensions.y - World.HEIGHT) / 2f;
+        float xOffset = (dimensions.x() - World.WIDTH) / 2f;
+        float yOffset = (dimensions.y() - World.HEIGHT) / 2f;
 
         float left = -xOffset;
         float right = World.WIDTH + xOffset;
@@ -145,10 +145,10 @@ public final class Artist {
     }
 
     public void drawRect(Vec2 origin, Vec2 size, Color color) {
-        addVertex(origin.x, origin.y, color);
-        addVertex(origin.x + size.x, origin.y, color);
-        addVertex(origin.x + size.x, origin.y + size.y, color);
-        addVertex(origin.x, origin.y + size.y, color);
+        addVertex(origin.x(), origin.y(), color);
+        addVertex(origin.x() + size.x(), origin.y(), color);
+        addVertex(origin.x() + size.x(), origin.y() + size.y(), color);
+        addVertex(origin.x(), origin.y() + size.y(), color);
 
         spriteCount++;
     }
@@ -166,10 +166,10 @@ public final class Artist {
     }
 
     public void drawImage(Vec2 origin, Vec2 size, Image image, Color color) {
-        addVertex(origin.x, origin.y, image.x(), image.y() + image.h(), color);
-        addVertex(origin.x + size.x, origin.y, image.x() + image.w(), image.y() + image.h(), color);
-        addVertex(origin.x + size.x, origin.y + size.y, image.x() + image.w(), image.y(), color);
-        addVertex(origin.x, origin.y + size.y, image.x(), image.y(), color);
+        addVertex(origin.x(), origin.y(), image.x(), image.y() + image.h(), color);
+        addVertex(origin.x() + size.x(), origin.y(), image.x() + image.w(), image.y() + image.h(), color);
+        addVertex(origin.x() + size.x(), origin.y() + size.y(), image.x() + image.w(), image.y(), color);
+        addVertex(origin.x(), origin.y() + size.y(), image.x(), image.y(), color);
 
         texture = image.textureId();
 

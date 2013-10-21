@@ -31,11 +31,11 @@ public final class Paddle implements Collidable {
         this.size = new Vec2(WIDTH, HEIGHT);
 
         float startX =
-            bounds.left() + (bounds.right() - bounds.left() - this.size.x) / 2f;
+            bounds.left() + (bounds.right() - bounds.left() - this.size.x()) / 2f;
 
         this.pos = new Vec2(startX, startY);
 
-        this.vel = Vec2.ZERO;
+        this.vel = Vec2.ZERO();
     }
 
     public Vec2 vel() { return vel; }
@@ -53,19 +53,19 @@ public final class Paddle implements Collidable {
 
         vel = vel.add(accel).scale(1f - FRICTION);
 
-        if (vel.x > MAX_SPEED) { vel = new Vec2(MAX_SPEED, 0.0f); }
-        if (vel.x < -MAX_SPEED) { vel = new Vec2(-MAX_SPEED, 0.0f); }
+        if (vel.x() > MAX_SPEED) { vel = new Vec2(MAX_SPEED, 0.0f); }
+        if (vel.x() < -MAX_SPEED) { vel = new Vec2(-MAX_SPEED, 0.0f); }
 
         pos = pos.add(vel);
 
-        if (pos.x + size.x > bounds.right()) {
-            vel = Vec2.ZERO;
-            pos = new Vec2(bounds.right() - size.x, pos.y);
+        if (pos.x() + size.x() > bounds.right()) {
+            vel = Vec2.ZERO();
+            pos = new Vec2(bounds.right() - size.x(), pos.y());
         }
 
-        if (pos.x < bounds.left()) {
-            vel = Vec2.ZERO;
-            pos = new Vec2(bounds.left(), pos.y);
+        if (pos.x() < bounds.left()) {
+            vel = Vec2.ZERO();
+            pos = new Vec2(bounds.left(), pos.y());
         }
     }
 
@@ -78,7 +78,7 @@ public final class Paddle implements Collidable {
     }
 
     public Vec2 center() {
-        return new Vec2(pos.x + (size.x / 2.0f), pos.y + size.y);
+        return new Vec2(pos.x() + (size.x() / 2.0f), pos.y() + size.y());
     }
 
     public void hit() {
@@ -88,14 +88,14 @@ public final class Paddle implements Collidable {
     public Vec2 deflect(Vec2 vel, Vec2 collision, Axis axis) {
         switch (axis) {
         case X:
-            return new Vec2(-vel.x, vel.y);
+            return new Vec2(-vel.x(), vel.y());
 
         case Y:
-            float rotation = 0.5f - (collision.x - pos.x) / size.x;
-            return (new Vec2(vel.x, -vel.y)).rotate(rotation);
+            float rotation = 0.5f - (collision.x() - pos.x()) / size.x();
+            return (new Vec2(vel.x(), -vel.y())).rotate(rotation);
 
         default:
-            return Vec2.ZERO;
+            return Vec2.ZERO();
         }
     }
 
