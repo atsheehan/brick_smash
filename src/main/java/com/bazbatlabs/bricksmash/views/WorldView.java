@@ -34,7 +34,7 @@ public final class WorldView {
 
         this.leftBorder =
             new Rect(new Vec2(bounds.left() - BORDER_WIDTH, bounds.bottom()),
-                     new Vec2(BORDER_WIDTH, bounds.size.y));
+                     new Vec2(BORDER_WIDTH, bounds.size().y));
 
         this.leftCap =
             new Rect(new Vec2(bounds.left() - BORDER_WIDTH, bounds.top()),
@@ -42,7 +42,7 @@ public final class WorldView {
 
         this.rightBorder =
             new Rect(new Vec2(bounds.right(), bounds.bottom()),
-                     new Vec2(BORDER_WIDTH, bounds.size.y));
+                     new Vec2(BORDER_WIDTH, bounds.size().y));
 
         this.rightCap =
             new Rect(new Vec2(bounds.right(), bounds.top()),
@@ -50,7 +50,7 @@ public final class WorldView {
 
         this.topBorder =
             new Rect(new Vec2(bounds.left(), bounds.top()),
-                     new Vec2(bounds.size.x, BORDER_WIDTH));
+                     new Vec2(bounds.size().x, BORDER_WIDTH));
     }
 
     public void draw() {
@@ -114,8 +114,8 @@ public final class WorldView {
     }
 
     private void drawImageCentered(Image image, Rect bounds, float widthRatio, float heightRatio) {
-        Vec2 size = new Vec2(bounds.size.x / widthRatio, bounds.size.y / heightRatio);
-        Vec2 origin = new Vec2((bounds.size.x - size.x) / 2f, (bounds.size.y - size.y) / 2f);
+        Vec2 size = new Vec2(bounds.size().x / widthRatio, bounds.size().y / heightRatio);
+        Vec2 origin = new Vec2((bounds.size().x - size.x) / 2f, (bounds.size().y - size.y) / 2f);
 
         artist.drawImage(new Rect(origin, size), image);
     }

@@ -141,7 +141,7 @@ public final class Artist {
     }
 
     public void drawRect(Rect bounds, Color color) {
-        drawRect(bounds.origin, bounds.size, color);
+        drawRect(bounds.origin(), bounds.size(), color);
     }
 
     public void drawRect(Vec2 origin, Vec2 size, Color color) {
@@ -154,11 +154,11 @@ public final class Artist {
     }
 
     public void drawImage(Rect bounds, Image image) {
-        drawImage(bounds.origin, bounds.size, image, Color.WHITE);
+        drawImage(bounds.origin(), bounds.size(), image, Color.WHITE);
     }
 
     public void drawImage(Rect bounds, Image image, Color color) {
-        drawImage(bounds.origin, bounds.size, image, color);
+        drawImage(bounds.origin(), bounds.size(), image, color);
     }
 
     public void drawImage(Vec2 origin, Vec2 size, Image image) {
