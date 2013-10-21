@@ -4,6 +4,7 @@
 # TODO list
 /TODO.org
 
-# Build artifacts
-/.gradle
-/build
+# Build artifacts from SBT
+/target/
+/project/project/
+/project/target/
