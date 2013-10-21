@@ -90,10 +90,10 @@ public final class WorldView {
         for (Brick brick : world.bricks()) {
             if (brick.isBreaking()) {
                 int index = brick.stateCounter() / 4;
-                artist.drawImage(brick.bounds(), brickImages[index], Color.RED);
+                artist.drawImage(brick.bounds(), brickImages[index], Color.RED());
 
             } else {
-                artist.drawImage(brick.bounds(), brickImages[0], Color.RED);
+                artist.drawImage(brick.bounds(), brickImages[0], Color.RED());
             }
         }
 

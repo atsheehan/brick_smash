@@ -154,7 +154,7 @@ public final class Artist {
     }
 
     public void drawImage(Rect bounds, Image image) {
-        drawImage(bounds.origin(), bounds.size(), image, Color.WHITE);
+        drawImage(bounds.origin(), bounds.size(), image, Color.WHITE());
     }
 
     public void drawImage(Rect bounds, Image image, Color color) {
@@ -162,7 +162,7 @@ public final class Artist {
     }
 
     public void drawImage(Vec2 origin, Vec2 size, Image image) {
-        drawImage(origin, size, image, Color.WHITE);
+        drawImage(origin, size, image, Color.WHITE());
     }
 
     public void drawImage(Vec2 origin, Vec2 size, Image image, Color color) {
@@ -177,7 +177,7 @@ public final class Artist {
     }
 
     private void addVertex(float x, float y) {
-        addVertex(x, y, Color.WHITE);
+        addVertex(x, y, Color.WHITE());
     }
 
     private void addVertex(float x, float y, Color color) {
@@ -185,7 +185,7 @@ public final class Artist {
     }
 
     private void addVertex(float x, float y, float texX, float texY) {
-        addVertex(x, y, texX, texY, Color.WHITE);
+        addVertex(x, y, texX, texY, Color.WHITE());
     }
 
     private void addVertex(float x, float y, float texX, float texY, Color color) {
@@ -193,10 +193,10 @@ public final class Artist {
         vertices[vertexIndex++] = y;
         vertices[vertexIndex++] = texX;
         vertices[vertexIndex++] = texY;
-        vertices[vertexIndex++] = color.r;
-        vertices[vertexIndex++] = color.g;
-        vertices[vertexIndex++] = color.b;
-        vertices[vertexIndex++] = color.a;
+        vertices[vertexIndex++] = color.r();
+        vertices[vertexIndex++] = color.g();
+        vertices[vertexIndex++] = color.b();
+        vertices[vertexIndex++] = color.a();
     }
 
     /**
