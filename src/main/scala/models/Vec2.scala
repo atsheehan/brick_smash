@@ -47,5 +47,5 @@ object Vec2 {
     Vec2(Math.cos(angle).asInstanceOf[Float],
          Math.sin(angle).asInstanceOf[Float])
 
-  val ZERO = Vec2(0.0f, 0.0f)
+  val Zero = Vec2(0.0f, 0.0f)
 }

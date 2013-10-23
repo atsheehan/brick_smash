@@ -22,7 +22,7 @@ public final class Ball {
         this.world = world;
 
         this.center = new Vec2(initialCenter.x(), initialCenter.y() + RADIUS);
-        this.vel = Vec2.ZERO();
+        this.vel = Vec2.Zero();
 
         this.size = new Vec2(DIAMETER, DIAMETER);
         this.halfSize = new Vec2(RADIUS, RADIUS);

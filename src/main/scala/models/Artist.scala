@@ -178,7 +178,7 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
   // but the width will vary.
   def gameDimensions(screenWidth: Float, screenHeight: Float) =
     if (screenHeight == 0.0f) {
-      Vec2.ZERO
+      Vec2.Zero
     } else {
       val ratio = screenWidth / screenHeight
       Vec2(Artist.GameHeight * ratio, Artist.GameHeight)

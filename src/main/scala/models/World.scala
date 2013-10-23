@@ -5,7 +5,7 @@ import scala.collection.mutable.ListBuffer
 
 class World(val events: WorldEvents) {
 
-  val origin = Vec2.ZERO
+  val origin = Vec2.Zero
   val size = Vec2(World.Width, World.Height)
 
   val bounds = Rect(origin, size)

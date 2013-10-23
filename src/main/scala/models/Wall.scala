@@ -10,7 +10,7 @@ class Wall(val bounds: Rect, private val events: WorldEvents) extends Collidable
     axis match {
       case Axis.X => new Vec2(-vel.x, vel.y)
       case Axis.Y => new Vec2(vel.x, -vel.y)
-      case _ => Vec2.ZERO
+      case _ => Vec2.Zero
     }
   }
 

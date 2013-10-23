@@ -59,7 +59,7 @@ public final class Brick implements Collidable {
         switch (axis) {
         case X: return new Vec2(-vel.x(), vel.y());
         case Y: return new Vec2(vel.x(), -vel.y());
-        default: return Vec2.ZERO();
+        default: return Vec2.Zero();
         }
     }
 
