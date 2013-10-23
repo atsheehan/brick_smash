@@ -61,11 +61,11 @@ public final class WorldView {
             switch (event) {
             case WALL_HIT:
             case BRICK_HIT:
-                sounds.play(SoundMap.Sound.BLIP);
+                sounds.play(Blip$.MODULE$);
                 break;
 
             case PADDLE_HIT:
-                sounds.play(SoundMap.Sound.BLIP_LOW);
+                sounds.play(BlipLow$.MODULE$);
                 break;
             }
         }
