@@ -78,13 +78,13 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
   def changeSurface(width: Int, height: Int) {
     val dimensions = gameDimensions(width, height)
 
-    val xOffset = (dimensions.x - World.WIDTH) / 2f
-    val yOffset = (dimensions.y - World.HEIGHT) / 2f
+    val xOffset = (dimensions.x - World.Width) / 2f
+    val yOffset = (dimensions.y - World.Height) / 2f
 
     val left = -xOffset
-    val right = World.WIDTH + xOffset
+    val right = World.Width + xOffset
     val bottom = -yOffset
-    val top = World.HEIGHT + yOffset
+    val top = World.Height + yOffset
 
     Matrix.orthoM(projectionMatrix, 0, left, right, bottom, top, -1f, 1f)
     glViewport(0, 0, width, height)
@@ -186,8 +186,8 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
 }
 
 object Artist {
-  val GameHeight = World.HEIGHT * 1.2f
-  val GameWidth = World.WIDTH * 1.2f
+  val GameHeight = World.Height * 1.2f
+  val GameWidth = World.Width * 1.2f
 
   val FloatsPerPosition = 2
   val FloatsPerTexture = 2

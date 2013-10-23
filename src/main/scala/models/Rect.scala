@@ -22,3 +22,7 @@ class Rect(val origin: Vec2, val size: Vec2) {
   override def toString = f"x: ${origin.x}%.4f, y: ${origin.y}%.4f, " +
     f"w: ${size.x}%.4f, h: ${size.y}%.4f"
 }
+
+object Rect {
+  def apply(origin: Vec2, size: Vec2) = new Rect(origin, size)
+}
