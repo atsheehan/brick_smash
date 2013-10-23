@@ -29,7 +29,7 @@ class World(val events: WorldEvents) {
 
   for (i <- 0 until World.BricksPerRow) {
     val pos = Vec2(origin.x + (i * World.BrickWidth), 250f)
-    _bricks = new Brick(Rect(pos, brickSize), Brick.Type.TOUGH, events) :: _bricks
+    _bricks = new Brick(Rect(pos, brickSize), Brick.Type.Tough, events) :: _bricks
   }
 
   def bricks: java.util.List[Brick] = ListBuffer(_bricks: _*)
