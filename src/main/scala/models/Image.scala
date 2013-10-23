@@ -8,3 +8,8 @@ class Image(tx: Float, ty: Float, tw: Float, th: Float, texture: Texture) {
   val w: Float = tw / texture.width
   val h: Float = th / texture.height
 }
+
+object Image {
+  def apply(tx: Float, ty: Float, tw: Float, th: Float, texture: Texture) =
+    new Image(tx, ty, tw, th, texture)
+}
