@@ -67,7 +67,7 @@ class World(val events: WorldEvents) {
     _bricks = _bricks.filterNot { brick => brick.isDestroyed }
   }
 
-  def collidables: java.util.List[Collidable] = ListBuffer(paddle :: walls ::: _bricks : _ *)
+  def collidables = paddle :: walls ::: _bricks
 
   def startAcceleratingPaddle(dir: Direction) {
     paddle.startAccelerating(dir)
