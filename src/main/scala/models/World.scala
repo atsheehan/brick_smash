@@ -25,14 +25,12 @@ class World(val events: WorldEvents) {
 
   val brickSize = Vec2(World.BrickWidth, World.BrickHeight)
 
-  private var _bricks = List[Brick]()
+  var bricks = List[Brick]()
 
   for (i <- 0 until World.BricksPerRow) {
     val pos = Vec2(origin.x + (i * World.BrickWidth), 250f)
-    _bricks = new Brick(Rect(pos, brickSize), Brick.Type.Tough, events) :: _bricks
+    bricks = new Brick(Rect(pos, brickSize), Brick.Type.Tough, events) :: bricks
   }
-
-  def bricks: java.util.List[Brick] = ListBuffer(_bricks: _*)
 
   def floor = bounds.bottom
 
@@ -41,13 +39,13 @@ class World(val events: WorldEvents) {
       paddle.update()
       ball.update()
 
-      for (brick <- _bricks) {
+      for (brick <- bricks) {
         brick.update()
       }
 
       clearDestroyedBricks
 
-      if (_bricks.isEmpty) {
+      if (bricks.isEmpty) {
         state = State.Cleared
       }
 
@@ -64,10 +62,10 @@ class World(val events: WorldEvents) {
   }
 
   def clearDestroyedBricks {
-    _bricks = _bricks.filterNot { brick => brick.isDestroyed }
+    bricks = bricks.filterNot { brick => brick.isDestroyed }
   }
 
-  def collidables = paddle :: walls ::: _bricks
+  def collidables = paddle :: walls ::: bricks
 
   def startAcceleratingPaddle(dir: Direction) {
     paddle.startAccelerating(dir)

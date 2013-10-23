@@ -90,12 +90,12 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
     glViewport(0, 0, width, height)
   }
 
-  def startDrawing {
+  def startDrawing() {
     vertexIndex = 0
     spriteCount = 0
   }
 
-  def finishDrawing {
+  def finishDrawing() {
     vertexBuffer.clear()
     vertexBuffer.put(vertices)
 
