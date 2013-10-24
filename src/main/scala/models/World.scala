@@ -34,7 +34,7 @@ class World(val events: WorldEvents) {
 
   def floor = bounds.bottom
 
-  def update {
+  def update() {
     if (state == State.Normal) {
       paddle.update()
       ball.update()
@@ -67,15 +67,15 @@ class World(val events: WorldEvents) {
 
   def collidables = paddle :: walls ::: bricks
 
-  def startAcceleratingPaddle(dir: Direction) {
+  def startAcceleratingPaddle(dir: Direction.Value) {
     paddle.startAccelerating(dir)
   }
 
-  def stopAcceleratingPaddle(dir: Direction) {
+  def stopAcceleratingPaddle(dir: Direction.Value) {
     paddle.stopAccelerating(dir)
   }
 
-  def kickstartBall {
+  def kickstartBall() {
     val pi = Math.PI.asInstanceOf[Float]
     val angle = if (paddle.vel.x > 0f) pi / 4f
                 else if (paddle.vel.x < 0f) 3f * pi / 4f

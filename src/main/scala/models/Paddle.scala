@@ -40,11 +40,11 @@ class Paddle(val fieldBounds: Rect, startY: Float, val events: WorldEvents) exte
     }
   }
 
-  def startAccelerating(direction: Direction) {
+  def startAccelerating(direction: Direction.Value) {
     toggleAcceleration(direction, true)
   }
 
-  def stopAccelerating(direction: Direction) {
+  def stopAccelerating(direction: Direction.Value) {
     toggleAcceleration(direction, false)
   }
 
@@ -54,7 +54,7 @@ class Paddle(val fieldBounds: Rect, startY: Float, val events: WorldEvents) exte
     events.enqueue(Event.PaddleHit)
   }
 
-  def deflect(vel: Vec2, collision: Vec2, axis: Axis) =
+  def deflect(vel: Vec2, collision: Vec2, axis: Axis.Value) =
     axis match {
       case Axis.X => Vec2(-vel.x, vel.y)
       case Axis.Y => {
@@ -64,10 +64,10 @@ class Paddle(val fieldBounds: Rect, startY: Float, val events: WorldEvents) exte
       case _ => Vec2.Zero
     }
 
-  def toggleAcceleration(direction: Direction, start: Boolean) {
+  def toggleAcceleration(direction: Direction.Value, start: Boolean) {
     direction match {
-      case Direction.LEFT => acceleratingLeft = start
-      case Direction.RIGHT => acceleratingRight = start
+      case Direction.Left => acceleratingLeft = start
+      case Direction.Right => acceleratingRight = start
     }
   }
 

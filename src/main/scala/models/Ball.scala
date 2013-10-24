@@ -142,10 +142,10 @@ class Ball(initialCenter: Vec2, val world: World) {
     bestCollision
   }
 
-  class Collision(val collidable: Collidable, val distance: Float, val axis: Axis)
+  class Collision(val collidable: Collidable, val distance: Float, val axis: Axis.Value)
 
   object Collision {
-    def apply(collidable: Collidable, distance: Float, axis: Axis) =
+    def apply(collidable: Collidable, distance: Float, axis: Axis.Value) =
       new Collision(collidable, distance, axis)
 
     def None = Collision(null, Float.MaxValue, Axis.X)

@@ -6,7 +6,7 @@ class Wall(val bounds: Rect, private val events: WorldEvents) extends Collidable
     events.enqueue(Event.WallHit)
   }
 
-  def deflect(vel: Vec2, collision: Vec2, axis: Axis) = {
+  def deflect(vel: Vec2, collision: Vec2, axis: Axis.Value) = {
     axis match {
       case Axis.X => new Vec2(-vel.x, vel.y)
       case Axis.Y => new Vec2(vel.x, -vel.y)

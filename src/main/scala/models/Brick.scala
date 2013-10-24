@@ -37,20 +37,11 @@ class Brick(val bounds: Rect, val brickType: Brick.Type.Value, val events: World
     }
   }
 
-  def deflect(vel: Vec2, collision: Vec2, axis: Axis) =
+  def deflect(vel: Vec2, collision: Vec2, axis: Axis.Value) =
     if (axis == Axis.X) Vec2(-vel.x, vel.y) else Vec2(vel.x, -vel.y)
 }
 
 object Brick {
-  // sealed abstract class Type
-  // case object Normal extends Type
-  // case object Tough extends Type
-
-  // sealed abstract class State
-  // case object Normal extends State
-  // case object Breaking extends State
-  // case object Destroyed extends State
-
   object Type extends Enumeration {
     type Type = Value
     val Normal = Value("Tough")

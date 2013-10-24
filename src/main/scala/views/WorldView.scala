@@ -23,7 +23,7 @@ class WorldView(val world: World, val events: WorldEvents, val images: ImageMap,
   val topBorder = Rect(Vec2(bounds.left, bounds.top),
                        Vec2(bounds.size.x, BorderWidth))
 
-  def draw {
+  def draw() {
 
     while (events.hasNext) {
       val event = events.dequeue()
