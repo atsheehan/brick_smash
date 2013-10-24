@@ -1,7 +1,6 @@
 package com.bazbatlabs.bricksmash.views
 
 import com.bazbatlabs.bricksmash.models._
-import com.bazbatlabs.bricksmash.models.WorldEvents.Event
 
 class WorldView(val world: World, val events: WorldEvents, val images: ImageMap, val sounds: SoundMap, val artist: Artist) {
 
@@ -30,8 +29,8 @@ class WorldView(val world: World, val events: WorldEvents, val images: ImageMap,
       val event = events.dequeue()
 
       event match {
-        case Event.WALL_HIT | Event.BRICK_HIT => sounds.play(Blip)
-        case Event.PADDLE_HIT => sounds.play(BlipLow)
+        case Event.WallHit | Event.BrickHit => sounds.play(Blip)
+        case Event.PaddleHit => sounds.play(BlipLow)
       }
     }
 

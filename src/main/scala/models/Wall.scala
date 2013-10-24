@@ -3,7 +3,7 @@ package com.bazbatlabs.bricksmash.models
 class Wall(val bounds: Rect, private val events: WorldEvents) extends Collidable {
 
   def hit() {
-    events.enqueue(WorldEvents.Event.WALL_HIT)
+    events.enqueue(Event.WallHit)
   }
 
   def deflect(vel: Vec2, collision: Vec2, axis: Axis) = {

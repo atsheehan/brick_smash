@@ -51,7 +51,7 @@ class Paddle(val fieldBounds: Rect, startY: Float, val events: WorldEvents) exte
   def center = Vec2(pos.x + (size.x / 2f), pos.y + size.y)
 
   def hit {
-    events.enqueue(WorldEvents.Event.PADDLE_HIT)
+    events.enqueue(Event.PaddleHit)
   }
 
   def deflect(vel: Vec2, collision: Vec2, axis: Axis) =

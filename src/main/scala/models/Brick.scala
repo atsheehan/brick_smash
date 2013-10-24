@@ -16,7 +16,7 @@ class Brick(val bounds: Rect, val brickType: Brick.Type.Value, val events: World
   def isBreaking = state == Brick.State.Breaking
 
   def hit() {
-    events.enqueue(WorldEvents.Event.BRICK_HIT)
+    events.enqueue(Event.BrickHit)
 
     if (state == Brick.State.Normal) {
       durability -= 1
