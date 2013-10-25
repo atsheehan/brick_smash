@@ -12,6 +12,8 @@ class Ball(initialCenter: Vec2, val world: World) {
 
   var state = State.Stuck
 
+  def bounds = Rect(pos, size)
+
   def reset(center: Vec2) {
     this.center = Vec2(center.x, center.y + Ball.Radius)
     state = State.Stuck

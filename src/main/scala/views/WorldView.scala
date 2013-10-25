@@ -3,7 +3,9 @@ package com.bazbatlabs.bricksmash.views
 import com.bazbatlabs.bricksmash.models._
 import com.bazbatlabs.bricksmash.lib._
 
-class WorldView(val world: World, val events: WorldEvents, val images: ImageMap, val sounds: SoundMap, val artist: Artist) {
+class WorldView(val world: World, val events: WorldEvents,
+                val images: ImageMap, val sounds: SoundMap,
+                val artist: Artist) {
 
   val BorderWidth = 6f
 
@@ -26,45 +28,19 @@ class WorldView(val world: World, val events: WorldEvents, val images: ImageMap,
 
   def draw() {
 
-    while (events.hasNext) {
-      val event = events.dequeue()
-
-      event match {
-        case Event.WallHit | Event.BrickHit => sounds.play(Blip)
-        case Event.PaddleHit => sounds.play(BlipLow)
-      }
-    }
-
     val paddle = world.paddle
     val ball = world.ball
 
     artist.startDrawing()
 
-    artist.drawImage(paddle.pos, paddle.size, images.get("PADDLE"))
-    artist.drawImage(ball.pos, ball.size, images.get("BALL"))
+    artist.drawImage(paddle.bounds, images.get("PADDLE"))
+    artist.drawImage(ball.bounds, images.get("BALL"))
 
-    val brickImages = Array[Image](
-      images.get("BRICK"),
-      images.get("BRICK_1"),
-      images.get("BRICK_2"),
-      images.get("BRICK_3"),
-      images.get("BRICK_4")
-    )
-
-    for (brick <- world.bricks) {
-      if (brick.isBreaking) {
-        val index = brick.stateCounter / 4
-        artist.drawImage(brick.bounds, brickImages(index), Color.RED)
-
-      } else {
-        artist.drawImage(brick.bounds, brickImages(0), Color.RED)
-      }
-    }
+    world.bricks.foreach { brick => drawBrick(brick) }
 
     artist.drawImage(leftBorder, images.get("BORDER_SIDE"))
     artist.drawImage(rightBorder, images.get("BORDER_SIDE"))
     artist.drawImage(topBorder, images.get("BORDER_TOP"))
-
     artist.drawImage(leftCap, images.get("BORDER_CORNER"))
     artist.drawImage(rightCap, images.get("BORDER_CORNER"))
 
@@ -75,6 +51,14 @@ class WorldView(val world: World, val events: WorldEvents, val images: ImageMap,
     }
 
     artist.finishDrawing()
+  }
+
+  private def drawBrick(brick: Brick) {
+    if (brick.isBreaking) {
+      artist.drawImage(brick.bounds, images.frame("BRICK_BREAKING", brick.stateCounter), Color.RED)
+    } else {
+      artist.drawImage(brick.bounds, images.get("BRICK"), Color.RED)
+    }
   }
 
   private def drawImageCentered(image: Image, bounds: Rect, widthRatio: Float, heightRatio: Float) {
