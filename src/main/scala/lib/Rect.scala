@@ -1,4 +1,4 @@
-package com.bazbatlabs.bricksmash.models
+package com.bazbatlabs.bricksmash.lib
 
 class Rect(val origin: Vec2, val size: Vec2) {
 

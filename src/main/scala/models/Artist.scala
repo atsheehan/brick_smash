@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.opengl.Matrix
 import android.opengl.GLES20._
 
+import com.bazbatlabs.bricksmash.lib._
 import com.bazbatlabs.bricksmash.R
 
 class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {

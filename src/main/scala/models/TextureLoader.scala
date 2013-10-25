@@ -1,5 +1,7 @@
 package com.bazbatlabs.bricksmash.models
 
+import com.bazbatlabs.bricksmash.lib._
+
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

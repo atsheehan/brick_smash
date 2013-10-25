@@ -1,4 +1,4 @@
-package com.bazbatlabs.bricksmash.models
+package com.bazbatlabs.bricksmash.lib
 
 class Image(tx: Float, ty: Float, tw: Float, th: Float, texture: Texture) {
   val textureId: Int = texture.id

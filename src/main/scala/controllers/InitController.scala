@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.content.res.{AssetManager, Resources}
 import android.media.{AudioManager, SoundPool}
 
+import com.bazbatlabs.bricksmash.lib._
 import com.bazbatlabs.bricksmash.models._
 
 class InitController(val resources: Resources) extends Controller {

@@ -1,7 +1,6 @@
 package com.bazbatlabs.bricksmash.models
 
-import scala.collection.JavaConversions._
-import scala.collection.mutable.ListBuffer
+import com.bazbatlabs.bricksmash.lib._
 
 class World(val events: WorldEvents) {
 

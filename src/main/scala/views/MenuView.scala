@@ -1,6 +1,7 @@
 package com.bazbatlabs.bricksmash.views
 
 import com.bazbatlabs.bricksmash.models._
+import com.bazbatlabs.bricksmash.lib._
 
 class MenuView(val menu: Menu, val images: ImageMap, val sounds: SoundMap, val artist: Artist) {
 

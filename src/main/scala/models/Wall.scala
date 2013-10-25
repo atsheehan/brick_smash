@@ -1,5 +1,7 @@
 package com.bazbatlabs.bricksmash.models
 
+import com.bazbatlabs.bricksmash.lib._
+
 class Wall(val bounds: Rect, private val events: WorldEvents) extends Collidable {
 
   def hit() {

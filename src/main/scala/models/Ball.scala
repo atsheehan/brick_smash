@@ -1,5 +1,7 @@
 package com.bazbatlabs.bricksmash.models
 
+import com.bazbatlabs.bricksmash.lib._
+
 class Ball(initialCenter: Vec2, val world: World) {
 
   var center = Vec2(initialCenter.x, initialCenter.y + Ball.Radius)

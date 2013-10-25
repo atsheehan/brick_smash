@@ -4,6 +4,7 @@ import android.view.KeyEvent
 
 import tv.ouya.console.api.OuyaController
 
+import com.bazbatlabs.bricksmash.lib._
 import com.bazbatlabs.bricksmash.models._
 import com.bazbatlabs.bricksmash.views.WorldView
 

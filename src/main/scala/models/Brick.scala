@@ -1,5 +1,7 @@
 package com.bazbatlabs.bricksmash.models
 
+import com.bazbatlabs.bricksmash.lib._
+
 class Brick(val bounds: Rect, val brickType: Brick.Type.Value, val events: WorldEvents) extends Collidable {
 
   val BreakingDuration = 19

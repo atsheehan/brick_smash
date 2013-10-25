@@ -1,5 +1,7 @@
 package com.bazbatlabs.bricksmash.models
 
+import com.bazbatlabs.bricksmash.lib._
+
 class Paddle(val fieldBounds: Rect, startY: Float, val events: WorldEvents) extends Collidable {
 
   val size = Vec2(Paddle.Width, Paddle.Height)

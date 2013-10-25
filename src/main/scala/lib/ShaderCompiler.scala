@@ -1,4 +1,4 @@
-package com.bazbatlabs.bricksmash.models
+package com.bazbatlabs.bricksmash.lib
 
 import scala.io.Source
 
