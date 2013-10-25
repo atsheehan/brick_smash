@@ -9,6 +9,7 @@ import android.media.{AudioManager, SoundPool}
 
 import com.bazbatlabs.bricksmash.lib._
 import com.bazbatlabs.bricksmash.models._
+import com.bazbatlabs.bricksmash.views._
 
 class InitController(val resources: Resources) extends Controller {
 

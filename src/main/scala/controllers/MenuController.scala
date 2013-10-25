@@ -6,6 +6,7 @@ import tv.ouya.console.api.OuyaController
 
 import com.bazbatlabs.bricksmash.lib._
 import com.bazbatlabs.bricksmash.models._
+import com.bazbatlabs.bricksmash.views._
 import com.bazbatlabs.bricksmash.views.MenuView
 
 class MenuController(val artist: Artist, val images: ImageMap, val sounds: SoundMap, val worldController: WorldController) extends Controller {

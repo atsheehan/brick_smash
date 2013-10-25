@@ -1,4 +1,4 @@
-package com.bazbatlabs.bricksmash.models
+package com.bazbatlabs.bricksmash.views
 
 import java.nio.{ByteBuffer, ByteOrder, ShortBuffer, FloatBuffer}
 
@@ -8,6 +8,7 @@ import android.opengl.Matrix
 import android.opengl.GLES20._
 
 import com.bazbatlabs.bricksmash.lib._
+import com.bazbatlabs.bricksmash.models._
 import com.bazbatlabs.bricksmash.R
 
 class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
