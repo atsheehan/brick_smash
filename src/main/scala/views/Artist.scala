@@ -13,6 +13,44 @@ import com.bazbatlabs.bricksmash.R
 
 class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
 
+  val GameHeight = World.Height * 1.2f
+  val GameWidth = World.Width * 1.2f
+
+  val FloatsPerPosition = 2
+  val FloatsPerTexture = 2
+  val FloatsPerColor = 4
+
+  val PositionStart = 0
+  val TextureStart = PositionStart + FloatsPerPosition
+  val ColorStart = TextureStart + FloatsPerTexture
+
+  val FloatsPerVertex = FloatsPerPosition + FloatsPerTexture + FloatsPerColor
+  val BytesPerFloat = 4
+  val BytesPerShort = 2
+
+  val BytesPerVertex = FloatsPerVertex * BytesPerFloat
+
+  val VerticesPerSprite = 4
+  val IndicesPerSprite = 6
+
+  val MaxSprites = 1000
+  val MaxVertices = MaxSprites * VerticesPerSprite
+  val MaxIndices = MaxSprites * IndicesPerSprite
+
+  val VertexBufferSize = MaxVertices * BytesPerVertex
+
+  val VertexArraySize = MaxVertices * FloatsPerVertex
+
+  val IndexBufferSize = MaxIndices * BytesPerShort
+
+  val AColor = "a_Color"
+  val APosition = "a_Position"
+  val ATextureCoordinates = "a_TextureCoordinates"
+  val UMatrix = "u_Matrix"
+  val UTextureUnit = "u_TextureUnit"
+
+  val Tag = "Artist"
+
   var texture = 0
   val program = ShaderCompiler.buildProgram(R.raw.vertex_shader, R.raw.fragment_shader, resources)
 
@@ -22,25 +60,25 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
 
   glUseProgram(program)
 
-  var aColorLoc = glGetAttribLocation(program, Artist.AColor)
-  var aPositionLoc = glGetAttribLocation(program, Artist.APosition)
-  var aTextureCoordinatesLoc = glGetAttribLocation(program, Artist.ATextureCoordinates)
+  var aColorLoc = glGetAttribLocation(program, AColor)
+  var aPositionLoc = glGetAttribLocation(program, APosition)
+  var aTextureCoordinatesLoc = glGetAttribLocation(program, ATextureCoordinates)
 
-  var uMatrixLoc = glGetUniformLocation(program, Artist.UMatrix)
-  var uTextureUnitLoc = glGetUniformLocation(program, Artist.UTextureUnit)
+  var uMatrixLoc = glGetUniformLocation(program, UMatrix)
+  var uTextureUnitLoc = glGetUniformLocation(program, UTextureUnit)
 
   val projectionMatrix = new Array[Float](16)
 
   changeSurface(screenWidth, screenHeight)
 
-  val vertexBuffer = ByteBuffer.allocateDirect(Artist.VertexBufferSize)
+  val vertexBuffer = ByteBuffer.allocateDirect(VertexBufferSize)
     .order(ByteOrder.nativeOrder()).asFloatBuffer()
-  val vertices = new Array[Float](Artist.VertexArraySize)
+  val vertices = new Array[Float](VertexArraySize)
 
-  val indexBuffer = ByteBuffer.allocateDirect(Artist.IndexBufferSize)
+  val indexBuffer = ByteBuffer.allocateDirect(IndexBufferSize)
     .order(ByteOrder.nativeOrder()).asShortBuffer()
 
-  val indices = new Array[Short](Artist.MaxIndices)
+  val indices = new Array[Short](MaxIndices)
 
   var j = 0
   for (i <- 0 until (indices.length, 6)) {
@@ -60,19 +98,19 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
   private var vertexIndex = 0
   private var spriteCount = 0
 
-  vertexBuffer.position(Artist.PositionStart)
-  glVertexAttribPointer(aPositionLoc, Artist.FloatsPerPosition, GL_FLOAT,
-                        false, Artist.BytesPerVertex, vertexBuffer)
+  vertexBuffer.position(PositionStart)
+  glVertexAttribPointer(aPositionLoc, FloatsPerPosition, GL_FLOAT,
+                        false, BytesPerVertex, vertexBuffer)
   glEnableVertexAttribArray(aPositionLoc)
 
-  vertexBuffer.position(Artist.TextureStart)
-  glVertexAttribPointer(aTextureCoordinatesLoc, Artist.FloatsPerTexture, GL_FLOAT,
-                        false, Artist.BytesPerVertex, vertexBuffer)
+  vertexBuffer.position(TextureStart)
+  glVertexAttribPointer(aTextureCoordinatesLoc, FloatsPerTexture, GL_FLOAT,
+                        false, BytesPerVertex, vertexBuffer)
   glEnableVertexAttribArray(aTextureCoordinatesLoc)
 
-  vertexBuffer.position(Artist.ColorStart)
-  glVertexAttribPointer(aColorLoc, Artist.FloatsPerColor, GL_FLOAT,
-                        false, Artist.BytesPerVertex, vertexBuffer)
+  vertexBuffer.position(ColorStart)
+  glVertexAttribPointer(aColorLoc, FloatsPerColor, GL_FLOAT,
+                        false, BytesPerVertex, vertexBuffer)
 
   glEnableVertexAttribArray(aColorLoc)
   glViewport(0, 0, screenWidth, screenHeight)
@@ -111,7 +149,7 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
     glBindTexture(GL_TEXTURE_2D, texture)
     glUniform1i(uTextureUnitLoc, 0)
 
-    glDrawElements(GL_TRIANGLES, Artist.IndicesPerSprite * spriteCount, GL_UNSIGNED_SHORT, indexBuffer)
+    glDrawElements(GL_TRIANGLES, IndicesPerSprite * spriteCount, GL_UNSIGNED_SHORT, indexBuffer)
   }
 
   def drawRect(bounds: Rect, color: Color) {
@@ -183,46 +221,8 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
       Vec2.Zero
     } else {
       val ratio = screenWidth / screenHeight
-      Vec2(Artist.GameHeight * ratio, Artist.GameHeight)
+      Vec2(GameHeight * ratio, GameHeight)
     }
-}
 
-object Artist {
-  val GameHeight = World.Height * 1.2f
-  val GameWidth = World.Width * 1.2f
 
-  val FloatsPerPosition = 2
-  val FloatsPerTexture = 2
-  val FloatsPerColor = 4
-
-  val PositionStart = 0
-  val TextureStart = PositionStart + FloatsPerPosition
-  val ColorStart = TextureStart + FloatsPerTexture
-
-  val FloatsPerVertex = FloatsPerPosition + FloatsPerTexture + FloatsPerColor
-  val BytesPerFloat = 4
-  val BytesPerShort = 2
-
-  val BytesPerVertex = FloatsPerVertex * BytesPerFloat
-
-  val VerticesPerSprite = 4
-  val IndicesPerSprite = 6
-
-  val MaxSprites = 1000
-  val MaxVertices = MaxSprites * VerticesPerSprite
-  val MaxIndices = MaxSprites * IndicesPerSprite
-
-  val VertexBufferSize = MaxVertices * BytesPerVertex
-
-  val VertexArraySize = MaxVertices * FloatsPerVertex
-
-  val IndexBufferSize = MaxIndices * BytesPerShort
-
-  val AColor = "a_Color"
-  val APosition = "a_Position"
-  val ATextureCoordinates = "a_TextureCoordinates"
-  val UMatrix = "u_Matrix"
-  val UTextureUnit = "u_TextureUnit"
-
-  val Tag = "Artist"
 }
