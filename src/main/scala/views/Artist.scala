@@ -53,22 +53,26 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
   private var vertexIndex = 0
   private var spriteCount = 0
 
+  private var currentDimensions = Vec2.Zero
   changeSurface(screenWidth, screenHeight)
 
-  def changeSurface(width: Int, height: Int) {
-    val dimensions = gameDimensions(width, height)
+  private var offset = Vec2.Zero
 
-    val xOffset = (dimensions.x - World.Width) / 2f
-    val yOffset = (dimensions.y - World.Height) / 2f
+  def changeSurface(width: Int, height: Int) = {
+    currentDimensions = gameDimensions(width, height)
 
-    val left = -xOffset
-    val right = World.Width + xOffset
-    val bottom = -yOffset
-    val top = World.Height + yOffset
-
-    Matrix.orthoM(projectionMatrix, 0, left, right, bottom, top, -1f, 1f)
+    Matrix.orthoM(projectionMatrix, 0, 0f, currentDimensions.x, 0f,
+                  currentDimensions.y, -1f, 1f)
     glViewport(0, 0, width, height)
   }
+
+  def setOffset(newOffset: Vec2): Vec2 = {
+    val old = offset
+    offset = newOffset
+    old
+  }
+
+  def dimensions: Vec2 = currentDimensions
 
   def startDrawing() {
     resetCounters()
@@ -101,8 +105,8 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
   }
 
   private def addVertex(x: Float, y: Float, texX: Float, texY: Float, color: Color) {
-    vertices(vertexIndex) = x; vertexIndex += 1
-    vertices(vertexIndex) = y; vertexIndex += 1
+    vertices(vertexIndex) = x + offset.x; vertexIndex += 1
+    vertices(vertexIndex) = y + offset.y; vertexIndex += 1
     vertices(vertexIndex) = texX; vertexIndex += 1
     vertices(vertexIndex) = texY; vertexIndex += 1
     vertices(vertexIndex) = color.r; vertexIndex += 1

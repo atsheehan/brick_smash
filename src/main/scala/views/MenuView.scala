@@ -23,7 +23,18 @@ class MenuView(val menu: Menu, val images: ImageMap, val sounds: SoundMap, val a
     g = Math.abs(Math.cos(radians)).asInstanceOf[Float]
     val color = Color(r, g, b, 1f)
 
-    artist.drawImage(Rect(Vec2(100f, 200f), Vec2(200f, 20f)), images.get("TITLE"), color)
+    val titleImage = images.get("TITLE")
+    val dimensions = artist.dimensions
+
+    val titleHeight = dimensions.y / 12f
+    val titleWidth = titleHeight * (titleImage.w / titleImage.h)
+
+    val titleSize = Vec2(titleWidth, titleHeight)
+
+    val x = (dimensions.x - titleSize.x) / 2f
+    val y = (dimensions.y - titleSize.y) / 2f
+
+    artist.drawImage(Rect(Vec2(x, y), titleSize), titleImage, color)
     artist.finishDrawing()
 
     counter += 1

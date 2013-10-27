@@ -28,6 +28,12 @@ class WorldView(val world: World, val events: WorldEvents,
 
   def draw() {
 
+    val dimensions = artist.dimensions
+    val offset = Vec2((dimensions.x - World.Width) / 2f,
+                      (dimensions.y - World.Height) / 2f)
+
+    val oldOffset = artist.setOffset(offset)
+
     val paddle = world.paddle
     val ball = world.ball
 
@@ -51,6 +57,7 @@ class WorldView(val world: World, val events: WorldEvents,
     }
 
     artist.finishDrawing()
+    artist.setOffset(oldOffset)
   }
 
   private def drawBrick(brick: Brick) {
