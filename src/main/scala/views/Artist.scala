@@ -13,8 +13,8 @@ import com.bazbatlabs.bricksmash.R
 
 class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
 
-  val GameHeight = World.Height * 1.2f
-  val GameWidth = World.Width * 1.2f
+  val DisplayHeight = 240f
+
   val FloatsPerPosition = 2
   val FloatsPerTexture = 2
   val FloatsPerColor = 4
@@ -83,6 +83,7 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
     setUniforms()
 
     draw()
+
   }
 
   def drawImage(bounds: Rect, image: Image, color: Color = Color.WHITE) {
@@ -119,7 +120,7 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
       Vec2.Zero
     } else {
       val ratio = screenWidth / screenHeight
-      Vec2(GameHeight * ratio, GameHeight)
+      Vec2(DisplayHeight * ratio, DisplayHeight)
     }
 
   private def resetCounters() {

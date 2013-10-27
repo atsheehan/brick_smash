@@ -4,14 +4,20 @@ import com.bazbatlabs.bricksmash.lib._
 
 class World(val events: WorldEvents) {
 
+  val InitialChances = 30
+  val BricksPerRow = 14
+
+  val BrickWidth = World.Width / BricksPerRow
+  val BrickHeight = BrickWidth / 2f
+
   val origin = Vec2.Zero
   val size = Vec2(World.Width, World.Height)
 
   val bounds = Rect(origin, size)
 
-  var chancesRemaining = World.InitialChances
+  var chancesRemaining = InitialChances
 
-  val paddle = new Paddle(bounds, 50.0f, events)
+  val paddle = new Paddle(bounds, World.Height / 4f, events)
   val ball = new Ball(paddle.center, this)
 
   var state = State.Normal
@@ -22,12 +28,12 @@ class World(val events: WorldEvents) {
                    new Wall(Rect(Vec2(origin.x + size.x, origin.y),
                                  Vec2(0f, size.y)), events))
 
-  val brickSize = Vec2(World.BrickWidth, World.BrickHeight)
+  val brickSize = Vec2(BrickWidth, BrickHeight)
 
   var bricks = List[Brick]()
 
-  for (i <- 0 until World.BricksPerRow) {
-    val pos = Vec2(origin.x + (i * World.BrickWidth), 250f)
+  for (i <- 0 until BricksPerRow) {
+    val pos = Vec2(origin.x + (i * BrickWidth), World.Height * 3f / 4f)
     bricks = new Brick(Rect(pos, brickSize), Brick.Type.Tough, events) :: bricks
   }
 
@@ -96,12 +102,6 @@ class World(val events: WorldEvents) {
 }
 
 object World {
-  val Width = 400.0f
-  val Height = 300.0f
-
-  val InitialChances = 30
-  val BricksPerRow = 16
-
-  val BrickWidth = Width / BricksPerRow
-  val BrickHeight = BrickWidth / 3.0f
+  val Width = 224.0f
+  val Height = 186.0f
 }

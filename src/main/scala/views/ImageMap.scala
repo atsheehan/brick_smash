@@ -14,9 +14,9 @@ class ImageMap(resources: Resources) {
   }
 
   val images = Map(
-    "BRICK" -> Image(0f, 0f, 40f, 12f, texture),
+    "BRICK" -> Image(48f, 0f, 16f, 8f, texture),
     "BALL" -> Image(0f, 156f, 8f, 8f, texture),
-    "PADDLE" -> Image(0f, 188f, 48f, 12f, texture),
+    "PADDLE" -> Image(48f, 9f, 26f, 8f, texture),
     "GAME_OVER" -> Image(74f, 65f, 128f, 16f, texture),
     "CLEARED" -> Image(74f, 82f, 104f, 16f, texture),
     "BORDER_CORNER" -> Image(41f, 0f, 6f, 6f, texture),

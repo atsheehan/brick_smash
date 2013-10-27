@@ -77,9 +77,9 @@ class Paddle(val fieldBounds: Rect, startY: Float, val events: WorldEvents) exte
 }
 
 object Paddle {
-    val Friction = 0.1f
-    val Acceleration = 0.75f
-    val Width = 50f
-    val Height = 10f
-    val MaxSpeed = 5f
+    val Friction = 0.2f
+    val Acceleration = 0.65f
+    val Width = 26f
+    val Height = 8f
+    val MaxSpeed = 4f
 }

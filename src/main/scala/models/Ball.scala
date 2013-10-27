@@ -164,7 +164,7 @@ class Ball(initialCenter: Vec2, val world: World) {
 }
 
 object Ball {
-  val Radius = 5f
+  val Radius = 4f
   val Diameter = Radius + Radius
-  val Speed = 5f
+  val Speed = 3f
 }
