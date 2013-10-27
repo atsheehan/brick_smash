@@ -23,7 +23,7 @@ class MenuView(val menu: Menu, val images: ImageMap, val sounds: SoundMap, val a
     g = Math.abs(Math.cos(radians)).asInstanceOf[Float]
     val color = Color(r, g, b, 1f)
 
-    artist.drawImage(Vec2(100f, 200f), Vec2(200f, 20f), images.get("TITLE"), color)
+    artist.drawImage(Rect(Vec2(100f, 200f), Vec2(200f, 20f)), images.get("TITLE"), color)
     artist.finishDrawing()
 
     counter += 1
