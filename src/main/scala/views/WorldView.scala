@@ -27,17 +27,30 @@ class WorldView(val world: World, val events: WorldEvents,
                        Vec2(bounds.size.x, BorderWidth))
 
   def draw() {
+    artist.startDrawing()
 
     val dimensions = artist.dimensions
+    val width = dimensions.x.asInstanceOf[Int]
+    val height = dimensions.y.asInstanceOf[Int]
+
+    val tileImage = images.get("BACKGROUND_TILE")
+    val tileSize = Vec2(16f, 16f)
+
+    for (x <- 0 until (width, 16)) {
+      for (y <- 0 until (height, 16)) {
+        artist.drawImage(Rect(Vec2(x, y), tileSize), tileImage)
+      }
+    }
+
     val offset = Vec2((dimensions.x - World.Width) / 2f,
                       (dimensions.y - World.Height) / 2f)
 
     val oldOffset = artist.setOffset(offset)
 
+    artist.drawImage(Rect(Vec2.Zero, Vec2(World.Width, World.Height)), images.get("BLANK"), Color.BLACK)
+
     val paddle = world.paddle
     val ball = world.ball
-
-    artist.startDrawing()
 
     artist.drawImage(paddle.bounds, images.get("PADDLE"))
     artist.drawImage(ball.bounds, images.get("BALL"))

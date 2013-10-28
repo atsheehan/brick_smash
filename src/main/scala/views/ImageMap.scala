@@ -22,7 +22,9 @@ class ImageMap(resources: Resources) {
     "BORDER_CORNER" -> Image(41f, 0f, 6f, 6f, texture),
     "BORDER_TOP" -> Image(41f, 7f, 6f, 6f, texture),
     "BORDER_SIDE" -> Image(41f, 14f, 6f, 6f, texture),
-    "TITLE" -> Image(2f, 120f, 187f, 16f, texture)
+    "TITLE" -> Image(2f, 120f, 187f, 16f, texture),
+    "BACKGROUND_TILE" -> Image(48f, 18f, 16f, 16f, texture),
+    "BLANK" -> Image(48f, 35f, 2f, 2f, texture)
   )
 
   val animations = Map(
