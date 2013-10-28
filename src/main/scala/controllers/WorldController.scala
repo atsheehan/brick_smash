@@ -3,13 +3,15 @@ package com.bazbatlabs.bricksmash.controllers
 import android.view.KeyEvent
 
 import tv.ouya.console.api.OuyaController
+import android.content.res.Resources
 
 import com.bazbatlabs.bricksmash.lib._
 import com.bazbatlabs.bricksmash.models._
 import com.bazbatlabs.bricksmash.views._
 import com.bazbatlabs.bricksmash.views.WorldView
 
-class WorldController(val artist: Artist, val images: ImageMap, val sounds: SoundMap) extends Controller {
+class WorldController(val artist: Artist, val images: ImageMap,
+                      val sounds: SoundMap, val resources: Resources) extends Controller {
 
   val events = new WorldEvents()
   val world = new World(events)

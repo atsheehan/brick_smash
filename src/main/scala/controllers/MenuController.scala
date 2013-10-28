@@ -1,6 +1,7 @@
 package com.bazbatlabs.bricksmash.controllers
 
 import android.view.KeyEvent
+import android.content.res.Resources
 
 import tv.ouya.console.api.OuyaController
 
@@ -9,7 +10,8 @@ import com.bazbatlabs.bricksmash.models._
 import com.bazbatlabs.bricksmash.views._
 import com.bazbatlabs.bricksmash.views.MenuView
 
-class MenuController(val artist: Artist, val images: ImageMap, val sounds: SoundMap, val worldController: WorldController) extends Controller {
+class MenuController(val artist: Artist, val images: ImageMap,
+                     val sounds: SoundMap, val resources: Resources) extends Controller {
 
   val menu = new Menu()
   val view = new MenuView(menu, images, sounds, artist)
@@ -20,7 +22,7 @@ class MenuController(val artist: Artist, val images: ImageMap, val sounds: Sound
     menu.update()
 
     if (menu.isReadyToStartGame) {
-      worldController
+      new WorldController(artist, images, sounds, resources)
     } else {
       this
     }

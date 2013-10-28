@@ -39,8 +39,7 @@ class InitController(val resources: Resources) extends Controller {
 
   override def update(): Controller = {
     if (finished) {
-      val worldController = new WorldController(artist, images, sounds)
-      new MenuController(artist, images, sounds, worldController)
+      new MenuController(artist, images, sounds, resources)
     } else {
       this
     }
