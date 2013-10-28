@@ -2,7 +2,7 @@ package com.bazbatlabs.bricksmash.models
 
 import com.bazbatlabs.bricksmash.lib._
 
-class World(val events: WorldEvents) {
+class World(brickTypes: Array[Brick.Type.Value], val events: WorldEvents) {
 
   val InitialChances = 30
   val BricksPerRow = 14
@@ -32,13 +32,11 @@ class World(val events: WorldEvents) {
 
   var bricks = List[Brick]()
 
-  var isTough = false
-  for (i <- 0 until BricksPerRow) {
-    val pos = Vec2(origin.x + (i * BrickWidth), World.Height * 3f / 4f)
-    val brickType = if (isTough) Brick.Type.Tough else Brick.Type.Normal
-    isTough = !isTough
-
+  var x = 0f
+  for (brickType <- brickTypes) {
+    val pos = Vec2(origin.x + x, World.Height * 3f / 4f)
     bricks = new Brick(Rect(pos, brickSize), brickType, events) :: bricks
+    x += BrickWidth
   }
 
   def floor = bounds.bottom

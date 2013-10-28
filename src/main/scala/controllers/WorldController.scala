@@ -1,5 +1,7 @@
 package com.bazbatlabs.bricksmash.controllers
 
+import scala.io.Source
+
 import android.view.KeyEvent
 
 import tv.ouya.console.api.OuyaController
@@ -9,12 +11,13 @@ import com.bazbatlabs.bricksmash.lib._
 import com.bazbatlabs.bricksmash.models._
 import com.bazbatlabs.bricksmash.views._
 import com.bazbatlabs.bricksmash.views.WorldView
+import com.bazbatlabs.bricksmash.R
 
 class WorldController(val artist: Artist, val images: ImageMap,
-                      val sounds: SoundMap, val resources: Resources) extends Controller {
+                      val sounds: SoundMap, resources: Resources) extends Controller {
 
   val events = new WorldEvents()
-  val world = new World(events)
+  val world = loadWorldFromResource(R.raw.levels)
   val view = new WorldView(world, events, images, sounds, artist)
 
   override def draw(screenWidth: Int, screenHeight: Int) { view.draw() }
@@ -51,5 +54,24 @@ class WorldController(val artist: Artist, val images: ImageMap,
 
   override def changeSurface(width: Int, height: Int) {
     artist.changeSurface(width, height)
+  }
+
+  private def loadWorldFromResource(resourceId: Int): World = {
+    val brickLayoutString = try {
+      val inputStream = resources.openRawResource(resourceId)
+      Source.fromInputStream(inputStream).mkString("")
+    } catch {
+      case ex: Resources.NotFoundException =>
+        throw new RuntimeException("Resource not found: " + R.raw.levels, ex)
+    }
+
+    val brickLayout = brickLayoutString.split("\\s+").map(
+      x => x match {
+        case "0" => Brick.Type.Normal
+        case "1" => Brick.Type.Tough
+      }
+    )
+
+    new World(brickLayout, events)
   }
 }
