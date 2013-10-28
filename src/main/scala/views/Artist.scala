@@ -14,7 +14,7 @@ import com.bazbatlabs.bricksmash.R
 class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
 
   val DisplayHeight = 240f
-
+  val ProjectionMatrixSize = 4 * 4
   val FloatsPerPosition = 2
   val FloatsPerTexture = 2
   val FloatsPerColor = 4
@@ -42,7 +42,7 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
     throw new RuntimeException("Failed to build OpenGL program. Check log for details.")
   }
 
-  private val projectionMatrix = new Array[Float](16)
+  private val projectionMatrix = new Array[Float](ProjectionMatrixSize)
 
   private val vertexBuffer = ByteBuffer.allocateDirect(VertexBufferSize)
     .order(ByteOrder.nativeOrder()).asFloatBuffer()
@@ -58,7 +58,7 @@ class Artist(resources: Resources, screenWidth: Int, screenHeight: Int) {
 
   private var offset = Vec2.Zero
 
-  def changeSurface(width: Int, height: Int) = {
+  def changeSurface(width: Int, height: Int) {
     currentDimensions = gameDimensions(width, height)
 
     Matrix.orthoM(projectionMatrix, 0, 0f, currentDimensions.x, 0f,

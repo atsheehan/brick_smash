@@ -22,7 +22,7 @@ class MenuController(val artist: Artist, val images: ImageMap,
     menu.update()
 
     if (menu.isReadyToStartGame) {
-      new WorldController(artist, images, sounds, resources)
+      new LevelLoaderController(1, artist, images, sounds, resources)
     } else {
       this
     }
@@ -41,7 +41,7 @@ class MenuController(val artist: Artist, val images: ImageMap,
     handled
   }
 
-  override def onKeyUp(keyCode: Int, event: KeyEvent) = false
+  override def onKeyUp(keyCode: Int, event: KeyEvent): Boolean = false
 
   override def changeSurface(width: Int, height: Int) {
     artist.changeSurface(width, height)

@@ -24,8 +24,19 @@ class ImageMap(resources: Resources) {
     "BORDER_SIDE" -> Image(41f, 14f, 6f, 6f, texture),
     "TITLE" -> Image(2f, 120f, 187f, 16f, texture),
     "BACKGROUND_TILE" -> Image(48f, 18f, 16f, 16f, texture),
-    "BLANK" -> Image(48f, 35f, 2f, 2f, texture)
+    "BLANK" -> Image(48f, 35f, 2f, 2f, texture),
+    "LEVEL" -> Image(1f, 102f, 70f, 14f, texture)
   )
+
+  val DigitWidth = 14f
+  val DigitHeight = 14f
+  val DigitPadding = 2f
+
+  val digits = (0 to 9).map {
+    num =>
+      Image(1f + (num * (DigitWidth + DigitPadding)), 140f,
+            DigitWidth, DigitHeight, texture)
+  }
 
   val animations = Map(
     "BRICK_BREAKING" -> (4, Array(
