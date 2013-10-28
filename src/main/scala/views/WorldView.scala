@@ -74,12 +74,20 @@ class WorldView(val world: World, val events: WorldEvents,
   }
 
   private def drawBrick(brick: Brick) {
+    val color = brickColor(brick.brickType)
+
     if (brick.isBreaking) {
-      artist.drawImage(brick.bounds, images.frame("BRICK_BREAKING", brick.stateCounter), Color.RED)
+      artist.drawImage(brick.bounds, images.frame("BRICK_BREAKING", brick.stateCounter), color)
     } else {
-      artist.drawImage(brick.bounds, images.get("BRICK"), Color.RED)
+      artist.drawImage(brick.bounds, images.get("BRICK"), color)
     }
   }
+
+  private def brickColor(brickType: Brick.Type.Value) =
+    brickType match {
+      case Brick.Type.Normal => Color.GREEN
+      case Brick.Type.Tough => Color.RED
+    }
 
   private def drawImageCentered(image: Image, bounds: Rect, widthRatio: Float, heightRatio: Float) {
     val size = Vec2(bounds.size.x / widthRatio, bounds.size.y / heightRatio)

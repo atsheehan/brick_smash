@@ -32,9 +32,13 @@ class World(val events: WorldEvents) {
 
   var bricks = List[Brick]()
 
+  var isTough = false
   for (i <- 0 until BricksPerRow) {
     val pos = Vec2(origin.x + (i * BrickWidth), World.Height * 3f / 4f)
-    bricks = new Brick(Rect(pos, brickSize), Brick.Type.Tough, events) :: bricks
+    val brickType = if (isTough) Brick.Type.Tough else Brick.Type.Normal
+    isTough = !isTough
+
+    bricks = new Brick(Rect(pos, brickSize), brickType, events) :: bricks
   }
 
   def floor = bounds.bottom
