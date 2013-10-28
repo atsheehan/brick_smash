@@ -63,12 +63,12 @@ class BrickSmashActivity extends Activity with GLSurfaceView.Renderer {
     tickCounter += currentTime - ticksLastFrame
     ticksLastFrame = currentTime
 
-    controller.draw(view.getWidth, view.getHeight)
-
     while (tickCounter > UPDATE_DELTA) {
       controller = controller.update()
       tickCounter -= UPDATE_DELTA
     }
+
+    controller.draw(view.getWidth, view.getHeight)
 
     logFramerate()
   }
