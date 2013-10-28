@@ -67,8 +67,9 @@ class WorldController(val artist: Artist, val images: ImageMap,
 
     val brickLayout = brickLayoutString.split("\\s+").map(
       x => x match {
-        case "0" => Brick.Type.Normal
-        case "1" => Brick.Type.Tough
+        case "0" => None
+        case "1" => Some(Brick.Type.Normal)
+        case "2" => Some(Brick.Type.Tough)
       }
     )
 

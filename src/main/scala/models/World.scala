@@ -2,7 +2,7 @@ package com.bazbatlabs.bricksmash.models
 
 import com.bazbatlabs.bricksmash.lib._
 
-class World(brickTypes: Array[Brick.Type.Value], val events: WorldEvents) {
+class World(brickTypes: Array[Option[Brick.Type.Value]], val events: WorldEvents) {
 
   val InitialChances = 30
   val BricksPerRow = 14
@@ -38,8 +38,11 @@ class World(brickTypes: Array[Brick.Type.Value], val events: WorldEvents) {
   var y = BrickStartHeight
   var x = 0f
   for (brickType <- brickTypes) {
-    val pos = Vec2(origin.x + x, y)
-    bricks = new Brick(Rect(pos, brickSize), brickType, events) :: bricks
+    if (!brickType.isEmpty) {
+      val pos = Vec2(origin.x + x, y)
+      bricks = new Brick(Rect(pos, brickSize), brickType.get, events) :: bricks
+    }
+
     x += BrickWidth
   }
 
