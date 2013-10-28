@@ -7,6 +7,9 @@ class World(brickTypes: Array[Brick.Type.Value], val events: WorldEvents) {
   val InitialChances = 30
   val BricksPerRow = 14
 
+  val PaddleStartHeight = World.Height / 9f
+  val BrickStartHeight = World.Height / 2f
+
   val BrickWidth = World.Width / BricksPerRow
   val BrickHeight = BrickWidth / 2f
 
@@ -17,7 +20,7 @@ class World(brickTypes: Array[Brick.Type.Value], val events: WorldEvents) {
 
   var chancesRemaining = InitialChances
 
-  val paddle = new Paddle(bounds, World.Height / 4f, events)
+  val paddle = new Paddle(bounds, PaddleStartHeight, events)
   val ball = new Ball(paddle.center, this)
 
   var state = State.Normal
@@ -32,9 +35,10 @@ class World(brickTypes: Array[Brick.Type.Value], val events: WorldEvents) {
 
   var bricks = List[Brick]()
 
+  var y = BrickStartHeight
   var x = 0f
   for (brickType <- brickTypes) {
-    val pos = Vec2(origin.x + x, World.Height * 3f / 4f)
+    val pos = Vec2(origin.x + x, y)
     bricks = new Brick(Rect(pos, brickSize), brickType, events) :: bricks
     x += BrickWidth
   }
