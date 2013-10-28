@@ -2,13 +2,13 @@ package com.bazbatlabs.bricksmash.models
 
 import com.bazbatlabs.bricksmash.lib._
 
-class World(brickTypes: Array[Option[Brick.Type.Value]], val events: WorldEvents) {
+class World(brickLayout: Iterator[Array[Option[Brick.Type.Value]]], val events: WorldEvents) {
 
   val InitialChances = 30
   val BricksPerRow = 14
 
   val PaddleStartHeight = World.Height / 9f
-  val BrickStartHeight = World.Height / 2f
+  val BrickStartHeight = 25f * World.Height / 28f
 
   val BrickWidth = World.Width / BricksPerRow
   val BrickHeight = BrickWidth / 2f
@@ -36,14 +36,19 @@ class World(brickTypes: Array[Option[Brick.Type.Value]], val events: WorldEvents
   var bricks = List[Brick]()
 
   var y = BrickStartHeight
-  var x = 0f
-  for (brickType <- brickTypes) {
-    if (!brickType.isEmpty) {
-      val pos = Vec2(origin.x + x, y)
-      bricks = new Brick(Rect(pos, brickSize), brickType.get, events) :: bricks
+  for (line <- brickLayout) {
+    var x = 0f
+
+    for (brickType <- line) {
+      if (!brickType.isEmpty) {
+        val pos = Vec2(origin.x + x, y)
+        bricks = new Brick(Rect(pos, brickSize), brickType.get, events) :: bricks
+      }
+
+      x += BrickWidth
     }
 
-    x += BrickWidth
+    y -= BrickHeight
   }
 
   def floor = bounds.bottom

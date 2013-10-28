@@ -57,21 +57,24 @@ class WorldController(val artist: Artist, val images: ImageMap,
   }
 
   private def loadWorldFromResource(resourceId: Int): World = {
-    val brickLayoutString = try {
+    val layoutLines = try {
       val inputStream = resources.openRawResource(resourceId)
-      Source.fromInputStream(inputStream).mkString("")
+      Source.fromInputStream(inputStream).getLines
     } catch {
       case ex: Resources.NotFoundException =>
         throw new RuntimeException("Resource not found: " + R.raw.levels, ex)
     }
 
-    val brickLayout = brickLayoutString.split("\\s+").map(
-      x => x match {
-        case "0" => None
-        case "1" => Some(Brick.Type.Normal)
-        case "2" => Some(Brick.Type.Tough)
-      }
-    )
+    val brickLayout = layoutLines.map {
+      line =>
+        line.split("\\s+").map(
+          x => x match {
+            case "0" => None
+            case "1" => Some(Brick.Type.Normal)
+            case "2" => Some(Brick.Type.Tough)
+          }
+        )
+    }
 
     new World(brickLayout, events)
   }
