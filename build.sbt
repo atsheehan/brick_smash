@@ -10,6 +10,8 @@ scalacOptions in Compile += "-feature"
 
 platformTarget in Android := "android-16"
 
+org.scalastyle.sbt.ScalastylePlugin.Settings
+
 run <<= run in Android
 
 install <<= install in Android
