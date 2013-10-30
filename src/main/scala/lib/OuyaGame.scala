@@ -13,8 +13,6 @@ import javax.microedition.khronos.egl.EGLConfig
 import tv.ouya.console.api.OuyaController
 import tv.ouya.console.api.OuyaController._
 
-import com.bazbatlabs.bricksmash.controllers.Controller
-
 abstract class OuyaGame extends Activity with GLSurfaceView.Renderer {
 
   protected def tag: String = "OuyaGame"

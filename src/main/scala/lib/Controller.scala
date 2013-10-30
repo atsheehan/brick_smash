@@ -1,4 +1,4 @@
-package com.bazbatlabs.bricksmash.controllers
+package com.bazbatlabs.bricksmash.lib
 
 import javax.microedition.khronos.opengles.GL10
 import android.view.KeyEvent

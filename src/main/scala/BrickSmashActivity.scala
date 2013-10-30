@@ -1,7 +1,7 @@
 package com.bazbatlabs.bricksmash
 
-import com.bazbatlabs.bricksmash.lib.OuyaGame
-import com.bazbatlabs.bricksmash.controllers._
+import com.bazbatlabs.bricksmash.lib.{OuyaGame, Controller}
+import com.bazbatlabs.bricksmash.controllers.InitController
 
 class BrickSmashActivity extends OuyaGame {
   override def tag: String = "BrickSmash"
