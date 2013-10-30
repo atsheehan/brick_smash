@@ -2,7 +2,9 @@ package com.bazbatlabs.bricksmash.models
 
 import com.bazbatlabs.bricksmash.lib._
 
-class World(brickLayout: Iterator[Array[Option[Brick.Type.Value]]], val events: WorldEvents) {
+class World(brickLayout: Array[Array[Option[Brick.Type.Value]]], val events: WorldEvents) {
+
+  val StateChangeDuration = 100
 
   val InitialChances = 30
   val BricksPerRow = 14
@@ -24,6 +26,7 @@ class World(brickLayout: Iterator[Array[Option[Brick.Type.Value]]], val events: 
   val ball = new Ball(paddle.center, this)
 
   var state = State.Normal
+  var stateCounter = 0
 
   val walls = List(new Wall(Rect(origin, Vec2(0f, size.y)), events),
                    new Wall(Rect(Vec2(origin.x, origin.y + size.y),
@@ -66,6 +69,7 @@ class World(brickLayout: Iterator[Array[Option[Brick.Type.Value]]], val events: 
 
       if (bricks.isEmpty) {
         state = State.Cleared
+        stateCounter = 0
       }
 
       if (ball.isLost) {
@@ -75,9 +79,12 @@ class World(brickLayout: Iterator[Array[Option[Brick.Type.Value]]], val events: 
           ball.reset(paddle.center)
         } else {
           state = State.GameOver
+          stateCounter = 0
         }
       }
     }
+
+    stateCounter += 1
   }
 
   def clearDestroyedBricks {
@@ -93,6 +100,12 @@ class World(brickLayout: Iterator[Array[Option[Brick.Type.Value]]], val events: 
   def stopAcceleratingPaddle(dir: Direction.Value) {
     paddle.stopAccelerating(dir)
   }
+
+  def isReadyToMoveToNextLevel: Boolean =
+    state == State.Cleared && stateCounter > StateChangeDuration
+
+  def isReadyToResetToMenu: Boolean =
+    state == State.GameOver && stateCounter > StateChangeDuration
 
   def kickstartBall() {
     val pi = Math.PI.asInstanceOf[Float]

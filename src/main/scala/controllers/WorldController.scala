@@ -13,18 +13,26 @@ import com.bazbatlabs.bricksmash.views._
 import com.bazbatlabs.bricksmash.views.WorldView
 import com.bazbatlabs.bricksmash.R
 
-class WorldController(val artist: Artist, val images: ImageMap,
+class WorldController(brickLayout: Array[Array[Option[Brick.Type.Value]]], val level: Int,
+                      val artist: Artist, val images: ImageMap,
                       val sounds: SoundMap, resources: Resources) extends Controller {
 
   val events = new WorldEvents()
-  val world = loadWorldFromResource(R.raw.levels)
+  val world = new World(brickLayout, events)
   val view = new WorldView(world, events, images, sounds, artist)
 
   override def draw(screenWidth: Int, screenHeight: Int) { view.draw() }
 
   override def update(): Controller = {
     world.update()
-    this
+
+    if (world.isReadyToMoveToNextLevel) {
+      new LevelLoaderController(level + 1, artist, images, sounds, resources)
+    } else if (world.isReadyToResetToMenu) {
+      new MenuController(artist, images, sounds, resources)
+    } else {
+      this
+    }
   }
 
   override def onKeyDown(keyCode: Int, event: KeyEvent): Boolean = {
@@ -54,28 +62,5 @@ class WorldController(val artist: Artist, val images: ImageMap,
 
   override def changeSurface(width: Int, height: Int) {
     artist.changeSurface(width, height)
-  }
-
-  private def loadWorldFromResource(resourceId: Int): World = {
-    val layoutLines = try {
-      val inputStream = resources.openRawResource(resourceId)
-      Source.fromInputStream(inputStream).getLines
-    } catch {
-      case ex: Resources.NotFoundException =>
-        throw new RuntimeException("Resource not found: " + R.raw.levels, ex)
-    }
-
-    val brickLayout = layoutLines.map {
-      line =>
-        line.split("\\s+").map(
-          x => x match {
-            case "0" => None
-            case "1" => Some(Brick.Type.Normal)
-            case "2" => Some(Brick.Type.Tough)
-          }
-        )
-    }
-
-    new World(brickLayout, events)
   }
 }
